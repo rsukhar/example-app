@@ -1,0 +1,33 @@
+// Responsive breakpoints
+// e.g. @include mobile(){ /* styles */ }
+$mobileBreakpoint: 599px;
+$tabletBreakpoint: 1023px;
+@mixin mobile() {
+	@media (max-width: $mobileBreakpoint) {
+		@content;
+	}
+}
+
+@mixin mobile_tablet() {
+	@media (max-width: $tabletBreakpoint) {
+		@content;
+	}
+}
+
+@mixin tablet() {
+	@media (min-width: $mobileBreakpoint + 1px) and (max-width: $tabletBreakpoint) {
+		@content;
+	}
+}
+
+@mixin tablet_desktop() {
+	@media (min-width: $mobileBreakpoint + 1px) {
+		@content;
+	}
+}
+
+@mixin desktop() {
+	@media (min-width: $tabletBreakpoint + 1px) {
+		@content;
+	}
+}
