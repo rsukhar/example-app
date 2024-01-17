@@ -5,11 +5,7 @@
         </div>
         <div class="b-formrow-input" ref="input">
             <slot />
-            <div class="b-form-tooltip" v-if="hint && className.includes('type_switch')">
-                <el-tooltip :content="hint" placement="bottom">
-                    <font-awesome-icon icon="circle-question" />
-                </el-tooltip>
-            </div>
+
             <div class="b-formrow-hint" v-if="hint && !className.includes('type_switch')">{{ hint }}</div>
             <div class="b-formrow-error" v-if="error">
                 {{ Array.isArray(error) ? error.join("") : error }}
@@ -18,35 +14,32 @@
     </div>
 </template>
 
-<script>
-import { ElTooltip } from "element-plus";
+<script setup>
+import { ref, computed } from 'vue';
 
-export default {
-    name: "BFormrow",
-    components: { ElTooltip },
-    props: {
-        // eslint-disable-next-line vue/no-reserved-props
-        class: String,
-        title: String,
-        titleWidth: {
-            type: String,
-            default: '220'
-        },
-        hint: String,
-        error: [String, Array],
+const props = defineProps({
+    class: String,
+    title: String,
+    titleWidth: {
+        type: String,
+        default: '220'
     },
-    computed: {
-        className() {
-            return [this.class, this.error ? "error" : ""];
-        },
-    },
-    methods: {
-        maybeFocusInput() {
-            const $input = this.$refs.input.querySelector("input, textarea");
-            if ($input) $input.focus();
-        },
-    },
-};
+    hint: String,
+    error: [String, Array],
+});
+
+const className = computed(() => {
+    return [props.class, props.error ? 'error' : ''];
+});
+
+let input = ref(null);
+
+function maybeFocusInput() {
+    const $input = input.value.querySelector('input, textarea');
+    if ($input) {
+        $input.focus();
+    }
+}
 </script>
 
 <style lang="scss">
@@ -63,6 +56,10 @@ export default {
     &-input {
         flex-grow: 1;
         text-align: left;
+
+        input, textarea {
+            width: 100%;
+        }
     }
 
     &-hint {
@@ -79,7 +76,7 @@ export default {
         margin-top: 5px;
     }
 
-    &.error .el-input {
+    &.error input {
         --el-border-color: var(--red);
     }
 
@@ -105,6 +102,7 @@ export default {
         &-title {
             width: auto !important;
         }
+
         .b-formrow-input .g-button {
             width: 100%;
         }
@@ -123,6 +121,10 @@ export default {
             color: var(--text-light);
             vertical-align: middle;
         }
+    }
+
+    .p-password {
+        display: block;
     }
 }
 </style>

@@ -7,125 +7,136 @@
             :key="fieldName"
         >
             <template v-if="field.type === 'radio'">
-                <el-radio-group size="small"
-                    :model-value="modelValue[fieldName]"
+                <SelectButton
+                    :options="field.options.slugs"
+                    aria-labelledby="custom"
+                    v-model="modelValue[fieldName]"
                     @update:modelValue="(newValue) => set(fieldName, newValue)"
                 >
-                    <el-radio-button v-for="(oTitle, oValue) in field.options" :key="oValue" :label="oValue">{{ oTitle }}</el-radio-button>
-                </el-radio-group>
+                    <template #option="slotProps">
+                        {{ field.options.values[slotProps.option] }}
+                    </template>
+                </SelectButton>
             </template>
+
             <template v-else-if="field.type === 'select'">
-                <el-select
-                    :model-value="modelValue[fieldName]"
+                <Dropdown
+                    v-model="modelValue[fieldName]"
                     @update:modelValue="(newValue) => set(fieldName, newValue)"
+                    :options="field.options"
+                    optionLabel="name"
                     :placeholder="field.placeholder"
-                >
-                    <el-option :label="field.placeholder" value="" />
-                    <el-option v-for="(oTitle, oName) in field.options" :key="oName" :label="oTitle" :value="oName" />
-                </el-select>
-            </template>
-            <template v-else-if="field.type === 'treeSelect'">
-                <el-tree-select
-                    :model-value="modelValue[fieldName]"
-                    @update:modelValue="(newValue) => set(fieldName, newValue)"
-                    :data="field.options"
-                    :render-after-expand="false"
-                    :placeholder="field.placeholder"
-                    node-key="id"
-                    :props="{ label: 'title' }"
-                    filterable
-                    check-strictly
+                    class="w-full md:w-14rem"
                 />
             </template>
-            <template v-else-if="field.type === 'text'">
-                <el-input
+
+            <template v-else-if="field.type === 'treeSelect'">
+                <TreeSelect
+                    v-model="modelValue[fieldName]"
+                    @update:modelValue="(newValue) => set(fieldName, newValue)"
+                    :options="field.options"
                     :placeholder="field.placeholder"
-                    :model-value="modelValue[fieldName]"
+                    class="md:w-20rem w-full" />
+            </template>
+
+            <template v-else-if="field.type === 'text'">
+                <InputText
+                    type="text"
+                    :placeholder="field.placeholder"
+                    v-model="modelValue[fieldName]"
                     @update:modelValue="(newValue) => set(fieldName, newValue, 300)"
                 />
             </template>
+
             <template v-else-if="field.type === 'checkbox'">
-                <el-checkbox
-                    :model-value="modelValue[fieldName]"
+                <Checkbox
+                    :id="fieldName"
+                    :binary="true"
+                    v-model="modelValue[fieldName]"
                     @update:modelValue="(newValue) => set(fieldName, newValue)"
-                    :label="field.text"
-                    true-label="1"
                 />
+                <label :for="fieldName" class="ml-2">{{ field.text }}</label>
             </template>
+
             <template v-else-if="field.type === 'daterange'">
-                <el-date-picker
-                    type="daterange"
-                    :model-value="modelValue[fieldName]"
+                <Calendar
+                    selectionMode="range"
+                    dateFormat="yy-mm-dd"
+                    v-model="modelValue[fieldName]"
                     @update:modelValue="(newValue) => set(fieldName, newValue)"
-                    start-placeholder="Начало"
-                    range-separator="—"
-                    end-placeholder="Конец"
-                    :clearable="false"
                 />
             </template>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from "vue";
 import { router } from "@inertiajs/vue3";
 import debounce from "lodash/debounce";
-import { ElRadioGroup, ElRadioButton, ElSelect, ElOption, ElTreeSelect } from "element-plus";
-import { ElInput, ElCheckbox, ElDatePicker } from "element-plus";
 
-export default {
-    name: "BFilter",
-    components: { ElRadioGroup, ElRadioButton, ElSelect, ElOption, ElTreeSelect, ElInput, ElCheckbox, ElDatePicker },
-    props: {
-        url: {
-            type: String,
-            default() {
-                return location.pathname;
-            },
-        },
-        modelValue: Object,
-        fields: Object,
-    },
-    computed: {
-        localModelValue: {
-            get() {
-                return this.modelValue;
-            },
-            set(newValue) {
-                this.$emit("update:modelValue", newValue);
-            },
+import InputText from 'primevue/inputtext';
+import Checkbox from 'primevue/checkbox';
+import SelectButton from 'primevue/selectbutton';
+import Dropdown from 'primevue/dropdown';
+import Calendar from 'primevue/calendar';
+import TreeSelect from 'primevue/treeselect';
+
+const props = defineProps({
+    url: {
+        type: String,
+        default() {
+            return location.pathname;
         },
     },
-    emits: ["update:modelValue"],
-    methods: {
-        set(fieldName, newValue, delay = null) {
-            this.localModelValue[fieldName] = newValue;
-            if (delay) {
-                this.updateDebounced(this);
-            } else {
-                this.updatePage();
-            }
-        },
-        updatePage() {
-            const query = {};
-            this.localModelValue.loading = true;
-            Object.keys(this.fields).forEach((key) => {
-                if (this.localModelValue[key]) query[key] = this.localModelValue[key];
-            });
-            router.get(this.url, query, {
-                preserveState: true,
-                preserveScroll: true,
-                replace: true,
-                onFinish: function() {
-                    this.localModelValue.loading = false;
-                }.bind(this),
-            });
-        },
-        updateDebounced: debounce((that) => {
-            that.updatePage();
-        }, 500),
+    modelValue: Object,
+    fields: Object,
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const localModelValue = computed({
+    get() {
+        return props.modelValue;
     },
-};
+    set(newValue) {
+        emit('update:modelValue', newValue);
+    },
+});
+
+function set(fieldName, newValue, delay = null) {
+    localModelValue[fieldName] = newValue;
+
+    if (delay) {
+        updateDebounced(this);
+    } else {
+        updatePage();
+    }
+}
+
+function updatePage() {
+    const query = {};
+    localModelValue.loading = true;
+
+    Object.keys(props.fields).forEach((key) => {
+        if (localModelValue[key]) {
+            query[key] = localModelValue[key];
+        }
+    });
+
+    router.get(props.url, query, {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true,
+        onFinish: function() {
+            localModelValue.loading = false;
+        }.bind(this),
+    });
+}
+
+const updateDebounced = debounce((that) => {
+    that.updatePage();
+}, 500);
 </script>
 
 <style lang="scss">
@@ -137,7 +148,11 @@ export default {
     &-field {
         &.type_text {
             flex-grow: 1;
-            max-width: 300px;
+            max-width: 420px;
+
+            input {
+                width: 100%;
+            }
         }
 
         & + & {

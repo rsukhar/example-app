@@ -57,11 +57,6 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    /**
-     * Секретная подпись для проверки передачи данных между микросервисами без доп.запросов
-     */
-    'secret' => env('APP_SECRET', ''),
-
     'asset_url' => env('ASSET_URL'),
 
     /*
@@ -172,7 +167,6 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
     ])->toArray(),
 

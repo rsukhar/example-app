@@ -18,7 +18,8 @@ class UserSeeder extends Seeder
         if ( ! empty(DB::table('users')->count())) {
             return;
         }
-        DB::table('users')->insertGetId([
+
+        DB::table('users')->insert([
             'username' => 'admin',
             'password' => Hash::make('admin'),
             'role' => 'admin',

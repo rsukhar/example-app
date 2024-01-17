@@ -1,98 +1,137 @@
 <template>
     <Head title="Пользователи" />
+
     <div class="g-titlebar">
         <h1>Пользователи</h1>
         <Link href="/users/create/" class="g-button outlined">Создать пользователя</Link>
     </div>
-    <b-filter v-model="filter" :fields="{
-        role: {type: 'radio', options: {'': 'Все', ...roleTitles}},
-        q: {type: 'text', placeholder: 'Поиск по имени пользователя или телефону'}
-    }" />
-    <el-table :data="users.data" table-layout="auto" :class="{ loading: filter.loading }">
-        <el-table-column label="Пользователь">
-            <template #default="{ row }">
-                <Link :href="`/users/${row.username}/`">{{ row.username }}</Link>
-                <div class="g-status red" v-if="row.is_blocked" style="margin-left: 1rem">Заблокирован</div>
+
+    <b-filter
+        v-model="filter"
+        :fields="{
+            role: {
+                type: 'radio',
+                options: userRoles
+            },
+            q: {
+                type: 'text',
+                placeholder: 'Поиск по имени пользователя или телефону',
+                'titleWidth': '320'
+            }
+        }"
+    />
+
+    <DataTable :value="users.data" tableStyle="min-width: 50rem" :class="{ loading: filter.loading }">
+        <Column header="Id">
+            <template #body="slotProps">
+                {{ slotProps.data.id }}
             </template>
-        </el-table-column>
-        <el-table-column label="Баланс">
-            <template #default="{ row }">
-                <Link :href="`/users/${row.username}/transactions`">{{ $filters.formatNumber(row.balance) }}</Link>
+        </Column>
+
+        <Column header="Зарегистрирован">
+            <template #body="slotProps">
+                {{ $filters.toLocalTime(slotProps.data.created_at, 'в') }}
             </template>
-        </el-table-column>
-        <el-table-column label="Тариф">
-            <template #default="{ row }">
-                {{ row.plan }}
+        </Column>
+
+        <Column header="Логин">
+            <template #body="slotProps">
+                <Link :href="`/users/${slotProps.data.username}/`">{{ slotProps.data.username }}</Link>
+                <Tag severity="danger" value="Заблокирован" class="ml-4" v-if="slotProps.data.is_blocked"></Tag>
             </template>
-        </el-table-column>
-        <el-table-column label="Переходов" prop="click_count" />
-        <el-table-column label="Проекты">
-            <template #default="{ row }">
-                <Link :href="`/projects/?user=${row.username}`">{{ row.projects_count }}</Link>
+        </Column>
+
+        <Column header="Email">
+            <template #body="slotProps">
+                {{ slotProps.data.email ?? '-' }}
             </template>
-        </el-table-column>
-        <el-table-column label="Зарегистрирован">
-            <template #default="{ row }">
-                {{ $filters.toLocalTime(row.created_at, 'в') }}
+        </Column>
+
+        <Column header="Роль">
+            <template #body="slotProps">
+                {{ slotProps.data.role_name }}
             </template>
-        </el-table-column>
-        <el-table-column align="right">
-            <template #default="{ row }">
-                <a
-                    @click="deleteUser(row.username)"
-                    title="Удалить"
-                    class="g-actionicon"
-                    v-if="row.role !== 'admin'"
-                >
-                    <font-awesome-icon icon="trash" />
-                </a>
-                <Link :href="`/users/${row.username}/edit/`" class="g-actionicon">
-                    <font-awesome-icon icon="pen-to-square" />
-                </Link>
+        </Column>
+
+        <Column header="">
+            <template #body="slotProps">
+                <div class="table-right">
+                    <a
+                        @click="deleteUser(slotProps.data.username)"
+                        title="Удалить"
+                        class="g-actionicon"
+                        v-if="slotProps.data.role !== 'admin'"
+                    >
+                        <i class="pi pi-trash"></i>
+                    </a>
+                    <Link :href="`/users/${slotProps.data.username}/edit/`" class="g-actionicon">
+                        <i class="pi pi-user-edit"></i>
+                    </Link>
+                </div>
             </template>
-        </el-table-column>
-    </el-table>
+        </Column>
+    </DataTable>
+
     <b-pagination :links="users.links" :total="users.total" />
+
+    <ConfirmDialog id="confirm" />
 </template>
 
-<script>
+<script setup>
+import { reactive, ref, inject } from 'vue';
 import { router } from "@inertiajs/vue3";
 import BFilter from "../../blocks/BFilter.vue";
-import { ElMessageBox, ElTable, ElTableColumn } from "element-plus";
-import BPagination from "../../blocks/BPagniation.vue";
+import BPagination from "../../blocks/BPagination.vue";
 
-export default {
-    components: { BPagination, ElTableColumn, ElTable, BFilter },
-    props: {
-        users: Object,
-        roleTitles: Object,
-        initialFilter: {
-            type: Object,
-            default() {
-                return {};
-            },
+import Tag from 'primevue/tag';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import ConfirmDialog from 'primevue/confirmdialog';
+import { useConfirm } from "primevue/useconfirm";
+
+const confirm = useConfirm();
+import { useToast } from "primevue/usetoast";
+
+const toast = useToast();
+
+const props = defineProps({
+    users: Array,
+    userRoles: Array,
+    initialFilter: {
+        type: Object,
+        default() {
+            return {};
         },
     },
-    data() {
-        return {
-            filter: { ...this.initialFilter },
-        };
-    },
-    methods: {
-        deleteUser(username) {
-            ElMessageBox.confirm(
-                `Вы действительно хотите удалить пользователя «${username}»?`,
-                'Подтверждение удаления', {
-                    confirmButtonText: 'Да',
-                    cancelButtonText: 'Нет',
-                    confirmButtonClass: 'g-button',
-                    cancelButtonClass: 'g-button outlined'
+});
+
+const filter = reactive({ ...props.initialFilter });
+const $filters = inject('filters');
+
+function deleteUser(username) {
+    confirm.require({
+        message: `Вы действительно хотите удалить пользователя «${username}»?`,
+        header: 'Подтверждение удаления',
+        accept: () => {
+            router.delete(`/users/${username}`, {
+                onError: error => {
+                    toast.add({
+                        severity: 'error',
+                        summary: 'Ошибка',
+                        detail: error.message,
+                        life: 3000
+                    });
                 }
-            ).then(() => {
-                router.delete(`/users/${username}`);
-            }).catch(() => {
             });
-        },
-    },
-};
+        }
+    });
+}
 </script>
+
+<style lang="scss">
+.table-right {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+</style>

@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       args:
         WWWGROUP: '${WWWGROUP}'
-    image: sail-8.2/app
+    image: sail-8.2/app-example
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     ports:
@@ -24,7 +24,6 @@ services:
     depends_on:
       - pgsql
       - redis
-      - clickhouse
   pgsql:
     image: 'postgres:16'
     ports:

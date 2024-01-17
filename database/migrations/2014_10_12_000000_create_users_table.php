@@ -12,17 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $userRoles = config('models.users.roles', ['admin' => 'Админ']);
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('name')->nullable();
+            $table->string('email')->unique()->nullable();
             $table->char('phone', 11)->unique()->nullable();
+            $table->string('username')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->boolean('is_blocked')->default(FALSE);
             $table->string('password');
-            $table->enum('role', array_keys($userRoles))->default(array_key_first($userRoles));
-            $table->date('birthday')->nullable();
-            $table->jsonb('meta')->nullable();
+            $table->string('role')->default('admin');
+            $table->string('birthday')->nullable();
+            $table->boolean('is_blocked')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

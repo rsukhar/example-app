@@ -1,0 +1,18 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+	<title>database-star-svg</title>
+	<style>
+		.s0 { fill: none;stroke: #000000;stroke-linecap: round;stroke-linejoin: round;stroke-width: 16.7 } 
+	</style>
+	<filter id="f0">
+		<feFlood flood-color="#3755fa" flood-opacity="1" />
+		<feBlend mode="normal" in2="SourceGraphic"/>
+		<feComposite in2="SourceAlpha" operator="in" />
+	</filter>
+	<g id="Folder 1" filter="url(#f0)">
+		<path id="Layer" fill-rule="evenodd" class="s0" d="m100 75c-36.9 0-66.7-11.2-66.7-25 0-13.8 29.8-25 66.7-25 36.9 0 66.7 11.2 66.7 25 0 13.8-29.8 25-66.7 25z"/>
+		<path id="Layer" fill-rule="evenodd" class="s0" d="m33.3 50v50c0 11.9 22.3 21.9 52.1 24.4"/>
+		<path id="Layer" fill-rule="evenodd" class="s0" d="m166.7 87.5v-37.5"/>
+		<path id="Layer" fill-rule="evenodd" class="s0" d="m33.3 100v50c0 12.9 26 23.5 59.4 24.8"/>
+		<path id="Layer" fill-rule="evenodd" class="s0" d="m148.3 173.5l-18.1 9.5c-0.5 0.2-1.1 0.4-1.7 0.3-0.6 0-1.2-0.2-1.7-0.6-0.5-0.3-0.9-0.8-1.1-1.4-0.2-0.5-0.3-1.2-0.2-1.8l3.5-20.1-14.7-14.2c-0.4-0.4-0.7-0.9-0.9-1.5-0.1-0.6-0.1-1.2 0.1-1.8 0.2-0.6 0.5-1.1 1-1.5 0.5-0.4 1-0.6 1.6-0.7l20.3-3 9-18.2c0.3-0.6 0.7-1 1.2-1.3 0.5-0.4 1.1-0.5 1.7-0.5 0.6 0 1.2 0.1 1.8 0.5 0.5 0.3 0.9 0.7 1.2 1.3l9 18.2 20.2 3c0.6 0.1 1.2 0.3 1.7 0.7 0.4 0.4 0.8 0.9 1 1.5 0.2 0.6 0.2 1.2 0 1.8-0.1 0.6-0.4 1.1-0.9 1.5l-14.6 14.2 3.5 20.1c0.1 0.6 0 1.2-0.2 1.8-0.3 0.6-0.6 1.1-1.1 1.4-0.5 0.4-1.1 0.6-1.7 0.6-0.6 0.1-1.2-0.1-1.8-0.3z"/>
+	</g>
+</svg>
