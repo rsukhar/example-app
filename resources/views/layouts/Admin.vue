@@ -18,8 +18,8 @@
             </template>
 
             <template v-if="!authUser.username">
-                <div class="b-headerlink">
-                    <Link href="/login" class="right">Авторизация</Link>
+                <div class="b-headerlink right">
+                    <Link href="/login">Авторизация</Link>
                 </div>
             </template>
         </header>
@@ -144,10 +144,6 @@ function logout() {
     display: flex;
     white-space: nowrap;
     gap: 2rem;
-
-    @include mobile() {
-        display: none;
-    }
 
     svg {
         margin-right: 0.3em;

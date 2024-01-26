@@ -11,6 +11,7 @@ import AdminLayout from '../views/layouts/Admin.vue';
 import '../css/app.scss';
 import 'primevue/resources/themes/lara-light-blue/theme.css';
 import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
 
 const appName = 'ExampleApp';
 

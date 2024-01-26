@@ -28,7 +28,7 @@ class UserController extends Controller
             ->filter($request->only(['role', 'q']))
             ->orderBy('id', 'asc')
             // Пагинация через системный метод
-            ->paginate(3)
+            ->paginate(5)
             // Добавление параметров запроса к пагинации
             ->appends($request->only(['role', 'q']))
             // Выборка только нужных полей для данной страницы
@@ -79,7 +79,7 @@ class UserController extends Controller
         $this->authorize('create', User::class);
 
         return Inertia::render('User/Create', [
-            'userRoles' => User::getUserRoles(),
+            'userRoles' => User::getUserRoles(false),
         ]);
     }
 
