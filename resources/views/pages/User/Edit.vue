@@ -14,19 +14,19 @@
 
     <form class="b-form" :class="{ loading: form.processing }" @submit.prevent="submit" style="width: 800px;">
         <b-formrow title="Логин" :error="errors.username" hint="Имя пользователя без @">
-            <InputText type="text" v-model="form.username" />
+            <InputText type="text" v-model="form.username"/>
         </b-formrow>
 
         <b-formrow title="Email" :error="errors.email">
-            <InputText type="text" v-model="form.email" />
+            <InputText type="text" v-model="form.email"/>
         </b-formrow>
 
         <b-formrow title="Имя" :error="errors.name">
-            <InputText type="text" v-model="form.name" />
+            <InputText type="text" v-model="form.name"/>
         </b-formrow>
 
         <b-formrow title="День рождения" :error="errors.birthday">
-            <Calendar v-model="form.birthday" dateFormat="dd.mm.yy" />
+            <Calendar v-model="form.birthday" dateFormat="dd.mm.yy"/>
         </b-formrow>
 
         <b-formrow title="Роль" :error="errors.role">
@@ -38,21 +38,21 @@
         </b-formrow>
 
         <b-formrow title="Пароль" :error="errors.password">
-            <Password v-model="form.password" />
+            <Password v-model="form.password"/>
         </b-formrow>
 
         <b-formrow title="Заблокирован" :error="errors.is_blocked">
-            <InputSwitch v-model="form.is_blocked" />
+            <InputSwitch v-model="form.is_blocked"/>
         </b-formrow>
 
         <b-formrow>
-            <Button label="Сохранить изменения" type="submit" />
+            <Button label="Сохранить изменения" type="submit"/>
         </b-formrow>
     </form>
 </template>
 
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import {useForm} from '@inertiajs/vue3';
 import dayjs from "dayjs";
 import BFormrow from '../../blocks/BFormrow.vue';
 

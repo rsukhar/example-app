@@ -3,7 +3,7 @@
 /public/build
 /public/hot
 /public/storage
-/public/vendor/horizon
+/storage/*.key
 /vendor
 .env
 .env.backup
@@ -17,6 +17,3 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-.DS_Store
-composer.lock
-package-lock.json

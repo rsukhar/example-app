@@ -2,11 +2,11 @@
     <div class="b-canvas">
         <header class="b-header">
             <Link class="b-logo" href="/">
-                <img src="/assets/logo-white.svg" />
+                <img src="/assets/logo-white.svg"/>
                 ExampleApp
             </Link>
 
-            <template v-if="authUser.username">
+            <template v-if="authUser && authUser.username">
                 <div class="b-headerlink">
                     <Link href="/users/">Список пользователей</Link>
                 </div>
@@ -17,7 +17,7 @@
                 </div>
             </template>
 
-            <template v-if="!authUser.username">
+            <template v-if="!authUser">
                 <div class="b-headerlink right">
                     <Link href="/login">Авторизация</Link>
                 </div>
@@ -28,7 +28,7 @@
             <section class="b-section">
                 <div class="b-section-h">
                     <div class="b-content">
-                        <slot />
+                        <slot/>
                     </div>
                 </div>
             </section>
@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { router } from "@inertiajs/vue3";
+import {router} from '@inertiajs/vue3';
 
 const props = defineProps({
     authUser: {
@@ -53,6 +53,8 @@ const props = defineProps({
         }
     }
 });
+
+console.log(props);
 
 function logout() {
     router.post("/logout/");
@@ -180,22 +182,27 @@ function logout() {
 .b-sidebar {
     width: 200px;
     margin-right: 4rem;
+
     .b-menu {
         display: flex;
         flex-direction: column;
+
         &-label {
             padding: 6px 0;
             white-space: normal;
             border-radius: var(--border-radius);
+
             &.active {
                 color: var(--black);
                 background-color: var(--bg);
             }
         }
+
         &-children {
             padding-left: 2rem;
         }
     }
+
     &:empty {
         display: none;
     }

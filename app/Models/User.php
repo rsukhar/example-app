@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Casts\Hash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,7 +13,7 @@ class User extends Authenticatable
 
     /**
      * Массив скрытых полей
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -23,7 +22,7 @@ class User extends Authenticatable
 
     /**
      * Массив заполняемых полей
-     * @var array
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
@@ -37,15 +36,18 @@ class User extends Authenticatable
     ];
 
     /**
-     * Массив преобразований значений
-     * @var array
+     * Преобразование значений
+     * @return array<string, string>
      */
-    protected $casts = [
-        'password' => Hash::class,
-        'email_verified_at' => 'datetime',
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'birthday' => 'datetime:d.m.Y',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime:Y-m-d H:i:s',
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'birthday' => 'datetime:d.m.Y',
+        ];
+    }
 
     /**
      * Фильтрация

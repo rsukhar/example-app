@@ -7,6 +7,7 @@ use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -20,7 +21,7 @@ class UserController extends Controller
      */
     public function index(Request $request): Response
     {
-        $this->authorize('viewAll', User::class);
+        Gate::authorize('viewAll', User::class);
 
         // Получение данных из модели без вспомогательных методов в контроллере по возможности (нет сложной логики)
         $users = User::query()
@@ -58,7 +59,7 @@ class UserController extends Controller
     {
         $user = User::where('username', $username)->firstOrFail();
         // Авторизация через политику
-        $this->authorize('view', $user);
+        Gate::authorize('view', $user);
 
         // Выборка только нужных полей для данной страницы
         return Inertia::render('User/Show', [
@@ -76,7 +77,7 @@ class UserController extends Controller
     public function create(Request $request): Response
     {
         // Авторизация через политику
-        $this->authorize('create', User::class);
+        Gate::authorize('create', User::class);
 
         return Inertia::render('User/Create', [
             'userRoles' => User::getUserRoles(false),
@@ -91,7 +92,7 @@ class UserController extends Controller
     public function store(StoreRequest $request): RedirectResponse
     {
         // Авторизация через политику
-        $this->authorize('create', User::class);
+        Gate::authorize('create', User::class);
         // Запись данных без вспомогательных методов в контроллере по возможности (нет сложной логики)
         // Если присутствует сложная обработка/логика, то выносим в (new User())->storeData($request->validated());
         (new User())->fill($request->validated())
@@ -109,7 +110,7 @@ class UserController extends Controller
     {
         $user = User::where('username', $username)->firstOrFail();
         // Авторизация через политику
-        $this->authorize('update', $user);
+        Gate::authorize('update', $user);
 
         // Выборка только нужных полей для данной страницы
         return Inertia::render('User/Edit', [
@@ -127,7 +128,7 @@ class UserController extends Controller
     {
         $user = User::where('username', $username)->firstOrFail();
         // Авторизация через политику
-        $this->authorize('update', $user);
+        Gate::authorize('update', $user);
         // Обновление данных без вспомогательных методов в контроллере по возможности (нет сложной логики)
         // Если присутствует сложная обработка/логика, то выносим в $user->updateData($request->validated());
         $user->update($request->validated());
@@ -146,7 +147,7 @@ class UserController extends Controller
     {
         $user = User::where('username', $username)->firstOrFail();
         // Авторизация через политику
-        $this->authorize('delete', $user);
+        Gate::authorize('delete', $user);
         // Удаление данных без вспомогательных методов в контроллере по возможности (нет сложной логики)
         // Если присутствует сложная обработка/логика, то выносим в $user->deleteData($request->validated());
         // Для зависящих друг от друга запросов используем DB::transaction()
@@ -156,5 +157,4 @@ class UserController extends Controller
             'message' => 'Ошибка при удалении пользователя',
         ]);
     }
-
 }

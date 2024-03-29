@@ -4,7 +4,7 @@
             {{ title }}
         </div>
         <div class="b-formrow-input" ref="input">
-            <slot />
+            <slot/>
 
             <div class="b-formrow-hint" v-if="hint && !className.includes('type_switch')">{{ hint }}</div>
             <div class="b-formrow-error" v-if="error">
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import {ref, computed} from 'vue';
 
 const props = defineProps({
     class: String,

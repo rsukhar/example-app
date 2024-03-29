@@ -1,5 +1,5 @@
 <template>
-    <Head title="ExampleApp" />
+    <Head title="ExampleApp"/>
 
     <div class="g-titlebar">
         <h1>ExampleApp</h1>

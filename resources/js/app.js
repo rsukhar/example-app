@@ -1,7 +1,7 @@
-import { createApp, h } from 'vue';
-import { createInertiaApp, Link, Head } from '@inertiajs/vue3';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { toLocalTime, formatNumber, ruPluralForm } from './helpers.js';
+import {createApp, h} from 'vue';
+import {createInertiaApp, Link, Head} from '@inertiajs/vue3';
+import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
+import {toLocalTime, formatNumber, ruPluralForm} from './helpers.js';
 
 import PrimeVue from 'primevue/config';
 import PrimeVueConfirmationService from 'primevue/confirmationservice';
@@ -21,8 +21,8 @@ createInertiaApp({
         page.default.layout ??= AdminLayout;
         return page;
     },
-    setup({ el, App, props, plugin }) {
-        const app = createApp({ render: () => h(App, props) })
+    setup({el, App, props, plugin}) {
+        const app = createApp({render: () => h(App, props)})
             .use(plugin)
             .use(PrimeVue)
             .use(PrimeVueConfirmationService)

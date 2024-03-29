@@ -1,12 +1,12 @@
 <template>
-    <Head :title="user.username" />
+    <Head :title="user.username"/>
 
     <div class="surface-section">
         <div class="flex flex-row">
             <div class="font-medium text-3xl text-900 mb-3">Личные данные</div>
             <div class="text-500 mb-5 ml-5">
                 <Link :href="`/users/${user.username}/edit/`">
-                    <Button label="Редактировать" />
+                    <Button label="Редактировать"/>
                 </Link>
             </div>
         </div>
@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { inject } from "vue";
+import {inject} from "vue";
 import Button from 'primevue/button';
 
 const $filters = inject('filters');
