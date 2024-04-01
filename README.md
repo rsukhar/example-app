@@ -4,7 +4,7 @@
 
 ### Используем
 
-1. **[Laravel 10](https://laravel.com/docs/10.x)** — PHP-фреймворк
+1. **[Laravel 11](https://laravel.com/docs/11.x)** — PHP-фреймворк
 2. **[Vue3](https://vuejs.org/)** — JS-фреймворк (используем только Composition API)
 3. **[PrimeVue](https://primevue.org/)** — Библиотека компонентов для Vue3
 4. **[VueUse](https://vueuse.org/)** — Библиотека вспомогательных методов для Vue3
@@ -29,7 +29,7 @@
 ## Локальная установка
 
 
-1. Настраиваем локальный алиас для [Sail](https://laravel.com/docs/10.x/sail)
+1. Настраиваем локальный алиас для [Sail](https://laravel.com/docs/11.x/sail)
 
    1.1. Если используете bash
 

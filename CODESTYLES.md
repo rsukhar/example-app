@@ -1,6 +1,6 @@
 # Соглашения по написанию кода
 
-**[Демо-приложение](https://laravel.com/docs/10.x)** — Пример приложения Laravel + Vue + InertiaJS
+**[Демо-приложение](https://github.com/rsukhar/app-example/)** — Пример приложения Laravel + Vue + InertiaJS
 
 # Содержание
 1. **[Общие соглашения](#1-общие-соглашения)**
@@ -100,6 +100,9 @@ if (is_null($var))
 ```php
 // Правильно
 public function move(int $targetId, string $relation): bool
+{
+
+}
 
 // Неправильно
 public function move(array $data): bool
@@ -201,11 +204,11 @@ protected function stripNames(string|array $regex, string $string, int $limit = 
 class myClass {
     protected string $myAttr;
     
-    public function getMyAttr(){
+    public function getMyAttr() {
         return $this->myAttr;
     }
     
-    public function setMyAttr($value){
+    public function setMyAttr($value) {
         $this->myAttr = $value;
     }
 }
@@ -226,7 +229,7 @@ $myClass->attr = 'value';
 $attr = $myClass->attr;
 ```
 
-#### 2.3.2. Мы прописываем транзакции только когда это необходимо
+#### 2.3.2. Мы используем транзакции БД только когда это необходимо
 
 Т.е. когда есть 2 или более запросов к базе данных, и невыполнение второго или последующих запросов нарушит консистентность данных.
 
@@ -235,7 +238,7 @@ $attr = $myClass->attr;
 👎 Неправильно
 ```php
 // Запрос только один
-DB::transaction(function () use ($data) {
+DB::transaction(function() use ($data) {
     $this->fill($data)->save();
 });
 ```
@@ -301,7 +304,7 @@ public function update(UpdateArticleRequest $request, int $id): RedirectResponse
 }
 ```
 
-При этом если предполагается дополнительная логика, то мы эти операции выносим в методы storeData/updateData/deleteData в модель.
+При этом если предполагается дополнительная логика, то мы эти операции выносим в в модель.
 
 👍 Правильно
 ```php
@@ -322,6 +325,40 @@ class Article extends Model
         };
         
         ...
+    }
+}
+```
+
+#### 2.3.4. Всю бизнес логику мы выносим в сервисные классы
+
+При этом все методы делаем статическими, а методы, которые должны иметь доступ к контексту объекта, выносим в модели
+
+👎 Неправильно
+```php
+public function store(Request $request)
+{
+    if ($request->hasFile('image')) {
+        $request->file('image')->move(public_path('images') . 'temp');
+    }
+    ...
+}
+```
+
+👍 Правильно
+```php
+public function store(Request $request)
+{
+    ArticleService::handleUploadedImage($request->file('image'));
+    ...
+}
+
+class ArticleService
+{
+    public static function handleUploadedImage($image): void
+    {
+        if (!is_null($image)) {
+            $image->move(public_path('images') . 'temp');
+        }
     }
 }
 ```
