@@ -28,21 +28,12 @@
 
 ## Локальная установка
 
+1. Настраиваем локальный алиас для [Sail](https://laravel.com/docs/11.x/sail) (на примере bash shell)
 
-1. Настраиваем локальный алиас для [Sail](https://laravel.com/docs/11.x/sail)
-
-   1.1. Если используете bash
-
-    ```bash
-    echo "alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'" >> ~/.bash_profile
-    source ~/.bash_profile
-    ```
-
-   1.2. Если используете zsh
-    ```bash
-    echo "alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'" >> ~/.zshrc
-    source ~/.zshrc
-    ```
+```bash
+echo "alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'" >> ~/.bash_profile
+source ~/.bash_profile
+```
 
 2. Устанавливаем переменные окружения
 
