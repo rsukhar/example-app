@@ -45,5 +45,4 @@ echo -e $(printf "$LBSUCCESS JS-библиотеки установлены")
 
 # 6. Запускаем Vite-сервер для отдачи статики
 echo -e $(printf "$LBINFO Запускаем Vite-сервер для отдачи статики")
-(./vendor/bin/sail npm run dev&)
-echo -e $(printf "$LBSUCCESS Теперь можно открыть в браузере http://localhost/")
+./vendor/bin/sail npm run dev
