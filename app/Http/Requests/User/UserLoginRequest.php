@@ -6,13 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class LoginRequest extends FormRequest
+class UserLoginRequest extends FormRequest
 {
-    /**
-     * Применяет правила валидации к запросу
-     *
-     * @return array<string, mixed>
-     */
     public function rules(): array
     {
         return [

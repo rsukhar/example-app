@@ -6,22 +6,17 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class StoreRequest extends FormRequest
+class UserStoreRequest extends FormRequest
 {
-    /**
-     * Применяет правила валидации к запросу
-     *
-     * @return array<string, mixed>
-     */
     public function rules(): array
     {
-        $userRoles = array_keys(config('models.users.roles', ['admin' => 'Админ']));
+        $userRoles = array_keys(config('models.users.roles', []));
 
         return [
-            'name' => 'sometimes|string|nullable|max:255',
             'username' => 'required|string|max:255|unique:users,username',
             'email' => 'sometimes|email|nullable|unique:users,email',
             'password' => 'sometimes|string|max:255',
+            'first_name' => 'sometimes|string|nullable|max:255',
             'is_blocked' => 'sometimes|boolean',
             'role' => [
                 'required',

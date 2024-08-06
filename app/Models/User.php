@@ -11,41 +11,27 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * Массив скрытых полей
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Массив заполняемых полей
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'name',
+        'username',
+        'first_name',
         'email',
         'phone',
-        'username',
         'password',
         'role',
-        'birthday',
         'is_blocked'
     ];
 
-    /**
-     * Преобразование значений
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
-            'created_at' => 'datetime:Y-m-d H:i:s',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'birthday' => 'datetime:d.m.Y',
+            'created_at' => 'datetime:Y-m-d H:i:s',
         ];
     }
 
@@ -79,21 +65,5 @@ class User extends Authenticatable
             });
 
         return $query;
-    }
-
-    /**
-     * Получить список ролей пользователей для фильтра
-     *
-     * @param bool $showDefaultRole
-     *
-     * @return array
-     */
-    public static function getUserRoles(bool $showDefaultRole = true): array
-    {
-        // Значения полей для фильтров выносим в config models.php
-        return [
-            'slugs' => array_merge($showDefaultRole ? [''] : [], array_keys(config('models.users.roles'))),
-            'values' => array_merge($showDefaultRole ? ['' => 'Все'] : [], config('models.users.roles'))
-        ];
     }
 }
