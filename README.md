@@ -6,7 +6,7 @@
 
 1. **[Laravel 11](https://laravel.com/docs/11.x)** — PHP-фреймворк
 2. **[Vue3](https://vuejs.org/)** — JS-фреймворк (используем только Composition API)
-3. **[PrimeVue](https://primevue.org/)** — Библиотека компонентов для Vue3
+3. **[Element Plus](https://element-plus.org/)** — Библиотека компонентов для Vue3
 4. **[VueUse](https://vueuse.org/)** — Библиотека вспомогательных методов для Vue3
 5. **[InertiaJS](https://inertiajs.com/)** — JS-фреймворк для монолитного приложения Laravel + Vue3.
 6. **SASS**
@@ -24,88 +24,35 @@
 
 ## Кодстайл
 
-**[codestyles.md](CODESTYLES.md)** - Соглашения по написанию кода
+1. Для форматирования PHP-кода используется стандартный для Laravel PSR-12. Он же реализован в .editorconfig
+2. Помимо этого мы придерживаемся [соглашений по написанию кода](https://suhar.teamly.ru/space/2c720188-40b6-4212-9de3-2855da8e0012/article/726563b6-0b63-4d1c-8954-6a65c4f8598a)
+3. Постепенно мы дополняем наши соглашения из предыдущего пункта распространенными [Laravel Coding Guidelines](https://xqsit94.github.io/laravel-coding-guidelines/).
 
-## Локальная установка
+## Настройка локальной sail-команды
 
-1. Настраиваем локальный алиас для [Sail](https://laravel.com/docs/11.x/sail) (на примере bash shell)
+Команда [sail](https://laravel.com/docs/11.x/sail) будет очень часто использоваться в командной строке. Для удобства её использования полезно добавить локальный алиас в используемую shell-оболочку (на примере bash): 
 
 ```bash
 echo "alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'" >> ~/.bash_profile
 source ~/.bash_profile
 ```
 
-2. Устанавливаем переменные окружения
+## Локальная установка
 
 ```bash
-cp workflow/.env.local .env  
+./workflow/install-local.sh
 ```
 
-3. Устанавливаем бэкенд-библиотеки
+Сразу после установки, проект уже запущен. После этого открываем в браузере http://localhost/
+
+## Локальный запуск
 
 ```bash
-composer install
+./workflow/up.sh
 ```
 
-4. Запускаем докер
+## Локальная остановка
 
 ```bash
-sail up -d
+sail down
 ```
-
-P.S. Если получаем ошибку "Порт занят", то sail down && sail up -d
-
-5. Генерируем стартовые данные
-
-```bash
-sail artisan key:generate
-```
-```bash
-sail artisan migrate
-```
-```bash
-sail artisan db:seed
-```
-
-Добавится пользователь: **admin** / **admin**
-
-6. Устанавливаем фронтенд-зависимости
-
-```bash
-sail npm install
-```
-
-7. Запускаем hmr-генерацию статики через vite:
-
-```bash
-sail npm run dev
-```
-P.S. Если получаем ошибку "Порт занят", то sail down && sail up -d
-
-8. Открываем в браузере: http://localhost
-
-## Запуск
-
-### Запуск приложения
-
-```bash
-# Back
-sail up -d
-
-# Первоначальная миграция
-sail artisan migrate
-
-# Front (vite compiler)
-sail npm run dev
-```
-
-Далее откройте http://localhost в браузере.
-
-### Ручной доступ к БД
-
-1. Установите dbeaver.io
-2. Создайте новое подключение PostgreSQL:
-    * Host: 0.0.0.0:5432
-    * Database: deepinsite
-    * Username: sail
-    * Password: password
