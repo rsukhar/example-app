@@ -15,7 +15,7 @@ class UserStoreRequest extends FormRequest
         return [
             'username' => 'required|string|max:255|unique:users,username',
             'email' => 'sometimes|email|nullable|unique:users,email',
-            'password' => 'sometimes|string|max:255',
+            'password' => 'required|string|max:255',
             'first_name' => 'sometimes|string|nullable|max:255',
             'is_blocked' => 'sometimes|boolean',
             'role' => [
@@ -23,6 +23,16 @@ class UserStoreRequest extends FormRequest
                 Rule::in($userRoles),
             ],
             'birthday' => 'sometimes|string|nullable',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'username.unique' => 'Логин уже существует',
+            'username' => 'Не заполнен логин',
+            'email' => 'Неверный формат Email-адреса',
+            'password' => 'Не заполнен пароль',
         ];
     }
 }

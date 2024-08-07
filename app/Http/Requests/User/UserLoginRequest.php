@@ -15,4 +15,13 @@ class UserLoginRequest extends FormRequest
             'password' => 'required|string|max:255',
         ];
     }
+
+
+    public function messages()
+    {
+        return [
+            'username' => 'Не заполнено имя пользователя',
+            'password' => 'Неверный пароль',
+        ];
+    }
 }

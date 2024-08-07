@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Navigation;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use Inertia\Response;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -22,7 +22,7 @@ class UserController extends Controller
      */
     public function login()
     {
-        return Inertia::render('Auth/Login');
+        return Inertia::render('User/Login');
     }
 
     /**
@@ -32,7 +32,7 @@ class UserController extends Controller
      */
     public function loginPost(UserLoginRequest $request)
     {
-        if (Auth::attempt($request->validated(), $request->post('remember'))) {
+        if (Auth::attempt($request->validated(), $request->remember)) {
             $request->session()->regenerate();
 
             return redirect()->intended();
@@ -92,7 +92,7 @@ class UserController extends Controller
      *
      * GET /users/{username}
      */
-    public function show(Request $request, User $user)
+    public function show(User $user)
     {
         Gate::authorize('view', $user);
 
@@ -107,6 +107,8 @@ class UserController extends Controller
                 'created_at' => $user->created_at,
             ],
             'userRoles' => config('models.users.roles'),
+            'subheaderTitle' => '@' . $user->username,
+            'menuLinks' => Navigation::getLinks('user'),
         ]);
     }
 
@@ -147,8 +149,8 @@ class UserController extends Controller
         Gate::authorize('update', $user);
 
         return Inertia::render('User/Edit', [
-            'user' => [
-                'id' => $user->id,
+            'id' => $user->id,
+            'values' => [
                 'username' => $user->username,
                 'first_name' => $user->first_name,
                 'email' => $user->email,
@@ -157,6 +159,9 @@ class UserController extends Controller
                 'created_at' => $user->created_at,
             ],
             'userRoles' => config('models.users.roles'),
+            'canEditAll' => request()->user()->can('updateAll', $user),
+            'subheaderTitle' => '@' . $user->username,
+            'menuLinks' => Navigation::getLinks('user'),
         ]);
     }
 

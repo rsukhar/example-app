@@ -47,5 +47,7 @@ library.add(
     // Перемещение
     solid.faUpDownLeftRight,
     // Сортировка
-    solid.faBars
+    solid.faBars,
+    // Звездочка
+    solid.faStar
 );

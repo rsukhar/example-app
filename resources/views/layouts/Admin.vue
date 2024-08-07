@@ -1,10 +1,7 @@
 <template>
     <div class="b-canvas">
         <header class="b-header">
-            <Link class="b-logo" href="/">
-                <img src="/assets/logo-white.svg"/>
-                ExampleApp
-            </Link>
+            <BHeaderLogo href="/" />
 
             <template v-if="authUser && authUser.username">
                 <div class="b-headerlink">
@@ -23,6 +20,13 @@
                 </div>
             </template>
         </header>
+
+        <div class="b-subheader" v-if="menuLinks || subheaderTitle">
+            <div class="b-subheader-title" v-if="subheaderTitle">{{ subheaderTitle }}</div>
+            <div class="b-subheader-menu">
+                <BMenu :links="menuLinks" />
+            </div>
+        </div>
 
         <div class="b-main">
             <section class="b-section">
@@ -44,6 +48,8 @@
 
 <script setup>
 import {router} from '@inertiajs/vue3';
+import BHeaderLogo from "../blocks/BHeaderLogo.vue";
+import BMenu from "../blocks/BMenu.vue";
 
 const props = defineProps({
     authUser: {
@@ -51,10 +57,10 @@ const props = defineProps({
         default() {
             return {};
         }
-    }
+    },
+    subheaderTitle: String,
+    menuLinks: Array
 });
-
-console.log(props);
 
 function logout() {
     router.post("/logout/");
@@ -153,6 +159,66 @@ function logout() {
 
     a:hover {
         color: var(--white);
+    }
+}
+
+.b-subheader {
+    background-color: var(--primary-darkest);
+    color: var(--white);
+    width: 100%;
+    padding: 0 2rem;
+    box-sizing: border-box;
+    &-title {
+        margin: 2rem 0 1rem;
+        font-size: var(--h2-font-size);
+    }
+    &-menu {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: start;
+        margin-left: -1.5rem;
+        overflow-x: auto;
+        .b-menu {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            background-color: var(--primary-darkest);
+            &-item {
+                &.active {
+                    > .b-menu-label {
+                        &:before {
+                            content: '';
+                            position: absolute;
+                            bottom: 0;
+                            left: 50%;
+                            margin-left: -15px;
+                            width: 0;
+                            height: 0;
+                            border-style: solid;
+                            border-width: 0 15px 10px 15px;
+                            border-color: transparent transparent #FFFFFF transparent;
+                            transform: rotate(0deg);
+                        }
+                    }
+                }
+            }
+            &-label {
+                height: 60px;
+                line-height: 60px;
+                position: relative;
+                color: var(--white);
+                padding: 0 1.5rem;
+                white-space: nowrap;
+                &:hover {
+                    background: var(--primary-dark);
+                }
+            }
+            &-children {
+                // TODO В перспективе можно сделать выпадающее меню
+                display: none;
+            }
+        }
     }
 }
 

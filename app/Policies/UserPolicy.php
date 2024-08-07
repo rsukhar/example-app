@@ -14,17 +14,15 @@ class UserPolicy
      */
     public function viewAll(User $authUser): bool
     {
-        // Могут только админы
         return ($authUser->role === 'admin');
     }
 
     /**
      * Может ли пользователь просматривать другого пользователя
      */
-    public function view(User $authUser, string $username): bool
+    public function view(User $authUser, User $viewedUser): bool
     {
-        // Могут только админы, либо если пользователь редактирует себя
-        return ($authUser->role === 'admin' or $authUser->username === $username);
+        return ($authUser->role === 'admin' or $authUser->id === $viewedUser->id);
     }
 
     /**
@@ -32,25 +30,30 @@ class UserPolicy
      */
     public function create(User $authUser): bool
     {
-        // Могут только админы
         return ($authUser->role === 'admin');
     }
 
     /**
-     * Может ли пользователь редактировать другого пользователя
+     * Может ли пользователь редактировать базовые параметры другого пользователя (email, пароль и тп)
      */
-    public function update(User $authUser, string $username): bool
+    public function update(User $authUser, User $updatedUser): bool
     {
-        // Могут только админы, либо если пользователь редактирует себя
-        return ($authUser->role === 'admin' or $authUser->username === $username);
+        return ($authUser->role === 'admin' or $authUser->id === $updatedUser->id);
+    }
+
+    /**
+     * Может ли пользователь редактировать расширенные параметры другого пользователя (роль, блокировка и тп)
+     */
+    public function updateAll(User $authUser, User $updatedUser): bool
+    {
+        return ($authUser->role === 'admin');
     }
 
     /**
      * Может ли пользователь удалять другого пользователя
      */
-    public function delete(User $authUser, string $username): bool
+    public function delete(User $authUser, User $deletedUser): bool
     {
-        // Могут только админы
         return ($authUser->role === 'admin');
     }
 }
