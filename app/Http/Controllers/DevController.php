@@ -26,6 +26,12 @@ class DevController extends Controller
         return null;
     }
 
+    public function getDummyConfig()
+    {
+        $config = config('services.dummy_json');
+        return $config;
+    }
+
     public function test()
     {
     }

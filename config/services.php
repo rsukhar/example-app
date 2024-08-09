@@ -5,5 +5,9 @@
  */
 
 return [
-    // ...
+    "dummy_json" => [
+        "host" => env("DUMMY_JSON_HOST", "https://dummyjson.com"),
+        "login" => env("DUMMY_JSON_LOGIN", "login"),
+        "password" => env("DUMMY_JSON_PASSWORD", "qwerty")
+    ]
 ];
