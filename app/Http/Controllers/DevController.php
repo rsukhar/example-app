@@ -25,7 +25,6 @@ class DevController extends Controller
 
         return null;
     }
-
     public function test()
     {
     }

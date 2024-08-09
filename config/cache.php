@@ -5,7 +5,7 @@
  */
 
 return [
-    'default' => env('CACHE_STORE', 'database'),
+    'default' => env('CACHE_STORE', 'redis'),
     'stores' => [
         'redis' => [
             'driver' => 'redis',

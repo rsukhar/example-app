@@ -1,7 +1,7 @@
 <template>
     <div class="b-login">
         <form class="b-form label_top" :class="{ loading: form.processing }" @submit.prevent="submit">
-            <b-formrow title="Имя пользователя" :error="errors.username">
+            <b-formrow title="Логин" :error="errors.username">
                 <el-input type="username" v-model="form.username" />
             </b-formrow>
             <b-formrow title="Пароль" :error="errors.password">
