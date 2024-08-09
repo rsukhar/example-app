@@ -9,7 +9,7 @@ import './font-awesome.js';
 import Admin from '../views/layouts/Admin.vue';
 import '../css/app.scss';
 
-const appName = 'Monstro.ru';
+const appName = 'ExampleApp';
 const appProgressBarColor = '#fff';
 
 createInertiaApp({
