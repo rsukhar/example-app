@@ -1,6 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
 return [
-    'previous' => '← Назад',
-    'next' => 'Вперед →',
+    'next'     => 'Вперёд &raquo;',
+    'previous' => '&laquo; Назад',
 ];
