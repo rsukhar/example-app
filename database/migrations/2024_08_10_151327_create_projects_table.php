@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 255);
             $table->foreignId('author_id')->constrained('users');
-            $table->boolean('is_active');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->index('author_id');
         });
