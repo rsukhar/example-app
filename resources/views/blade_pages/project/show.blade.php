@@ -5,7 +5,7 @@
 @section('header', $project['title'])
 
 @section('content')
-<p>Автор: {{ $project['author_id'] }}</p>
-<p>Ответственный: {{ $project['assignee_id'] }}</p>
-<p>Срок: {{ $project['deadline_date'] }}</p>
+<p>{{__('Автор: ') }} {{ $project['author_id'] }}</p>
+<p>{{__('Ответственный: ') }}{{ $project['assignee_id'] }}</p>
+<p>{{__('Срок: ') }}{{ $project['deadline_date'] }}</p>
 @endsection

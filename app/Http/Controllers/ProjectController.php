@@ -45,7 +45,12 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('blade_pages.project.index', ['projects' => $this->projects]);
+        $alert = [
+            'title' => 'Успешно',
+            'message' => 'Получен список проектов',
+            'type' => 'success'
+        ];
+        return view('blade_pages.project.index', ['projects' => $this->projects, 'alert' => $alert]);
     }
 
     /**

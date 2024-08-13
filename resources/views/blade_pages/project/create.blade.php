@@ -3,8 +3,8 @@
 @section('header', 'Создать новый проект')
 
 @section('content')
-<form action='{{ route('projects.store') }}' method='post'>
+<x-form action='{{route("projects.store")}}' method='post'>
     @include('blade_pages.project.form')
-    <input type="submit" value="Создать">
-</form>
+    <input type='submit' value='Создать'>
+</x-form>
 @endsection
