@@ -16,7 +16,9 @@ class AuthorizeMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $queryParameters = $request->all();
+
         info('query', $request->all());
+
         if (key_exists('access', $queryParameters)
             && $queryParameters['access'] === 'yes') {
             return $next($request);
