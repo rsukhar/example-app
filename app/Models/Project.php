@@ -12,4 +12,14 @@ class Project extends Model
     protected $guarded = [
         ''
     ];
+
+    public function author()
+    {
+        return $this->belongsTo('App\Models\User', 'author_id');
+    }
+
+    public function assignee()
+    {
+        return $this->belongsTo('App\Models\User', 'assignee_id');
+    }
 }

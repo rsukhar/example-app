@@ -66,4 +66,14 @@ class User extends Authenticatable
 
         return $query;
     }
+
+    public function ownedProjects()
+    {
+        return $this->hasMany('App\Models\Project', 'author_id');
+    }
+
+    public function assignedProjects()
+    {
+        return $this->hasMany('App\Models\Project', 'assignee_id');
+    }
 }
