@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Project;
 
 class ProjectController extends Controller
 {
@@ -26,20 +28,6 @@ class ProjectController extends Controller
             'first_name' => 'Sergey'
         ]
     ];
-    private $projects = [
-        0 => [
-            'title' => 'project1',
-            'author_id' => 2,
-            'assignee_id' => 10,
-            'deadline_date' => '2024-12-31'
-        ],
-        1 => [
-            'title' => 'New Year Project',
-            'author_id' => 2,
-            'assignee_id' => 26,
-            'deadline_date' => '2025-01-01'
-        ]
-    ];
     /**
      * Display a listing of the resource.
      */
@@ -50,7 +38,9 @@ class ProjectController extends Controller
             'message' => 'Получен список проектов',
             'type' => 'success'
         ];
-        return view('blade_pages.project.index', ['projects' => $this->projects, 'alert' => $alert]);
+
+        $projects = Project::all();
+        return view('blade_pages.project.index', ['projects' => $projects, 'alert' => $alert]);
     }
 
     /**
@@ -58,7 +48,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('blade_pages.project.create', ['projects' => $this->projects, 'users' => $this->users]);
+        $users = User::all();
+        return view('blade_pages.project.create', ['users' => $users]);
     }
 
     /**
@@ -66,7 +57,16 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        return 'Сохранить новый проект в базе данных';
+        // В контроллер будет передаваться id пользователя, 
+        // который создает проект
+        $author_id = 1;
+
+        $project = new Project();
+        $project->fill($request->all());
+        $project->author_id = $author_id;
+        $project->save();
+
+        return redirect('projects');
     }
 
     /**
@@ -74,8 +74,9 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
-        if (key_exists($id, $this->projects)) {
-            return view('blade_pages.project.show', ['project' => $this->projects[$id]]);
+        $project = Project::findOrFail($id);
+        if ($project !== null) {
+            return view('blade_pages.project.show', ['project' => $project]);
         }
         abort(404);
     }
@@ -85,8 +86,8 @@ class ProjectController extends Controller
      */
     public function edit(string $id)
     {
-        if (key_exists($id, $this->projects)) {
-            $projectToEdit = $this->projects[$id];
+        if ($projectToEdit !== null) {
+            $id = $projectToEdit->id;
             return view('blade_pages.project.edit', ['id' => $id, 'projectToEdit' => $projectToEdit, 'users' => $this->users]);
         }
         abort(404);
@@ -95,9 +96,12 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, int $id)
     {
-        return 'Сохранить изменения в проекте с id = ' . $id;
+        $project = Project::findOrFail($id);
+        $project->fill($request->all());
+        $project->save();
+        return redirect('projects');
     }
 
     /**

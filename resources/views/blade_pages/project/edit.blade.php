@@ -3,7 +3,8 @@
 @section('header', 'Редактировать проект')
 
 @section('content')
-<x-form action='{{ route('projects.update', $id) }}' method='post'>
+
+<x-form action='{{ route("projects.update", $id) }}' method='post'>
     @method('PUT')
     @include('blade_pages.project.form')
     <input type='submit' value='Изменить'>
