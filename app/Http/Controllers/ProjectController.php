@@ -5,42 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Project;
+use App\Http\Requests\Project\StoreProjectRequest;
+use App\Http\Requests\Project\UpdateProjectRequest;
 
 class ProjectController extends Controller
 {
-    private $users = [
-        0 => [
-            'id' => 1,
-            'username' => 'antoxa95',
-            'email' => 'seminanton2@gmail.com',
-            'first_name' => 'Anton'
-        ],
-        1 => [
-            'id' => 2,
-            'username' => 'petr93',
-            'email' => 'petrivanon@gmail.com',
-            'first_name' => 'Petr'
-        ],
-        2 => [
-            'id' => 3,
-            'username' => 'phpKiller',
-            'email' => 'egorov777@gmail.com',
-            'first_name' => 'Sergey'
-        ]
-    ];
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $alert = [
-            'title' => 'Успешно',
-            'message' => 'Получен список проектов',
-            'type' => 'success'
-        ];
-
         $projects = Project::all();
-        return view('blade_pages.project.index', ['projects' => $projects, 'alert' => $alert]);
+        return view('blade_pages.project.index', ['projects' => $projects]);
     }
 
     /**
@@ -55,14 +31,16 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request)
     {
         // В контроллер будет передаваться id пользователя, 
         // который создает проект
         $author_id = 1;
 
+        $validated = $request->validated();
+
         $project = new Project();
-        $project->fill($request->all());
+        $project->fill($validated);
         $project->author_id = $author_id;
         $project->save();
 
@@ -86,9 +64,11 @@ class ProjectController extends Controller
      */
     public function edit(string $id)
     {
+        $users = User::all();
+        $projectToEdit = Project::findOrFail($id);
         if ($projectToEdit !== null) {
             $id = $projectToEdit->id;
-            return view('blade_pages.project.edit', ['id' => $id, 'projectToEdit' => $projectToEdit, 'users' => $this->users]);
+            return view('blade_pages.project.edit', ['id' => $id, 'projectToEdit' => $projectToEdit, 'users' => $users]);
         }
         abort(404);
     }
@@ -96,8 +76,10 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $id)
+    public function update(UpdateProjectRequest $request, int $id)
     {
+        $validated = $request->validated();
+
         $project = Project::findOrFail($id);
         $project->fill($request->all());
         $project->save();
