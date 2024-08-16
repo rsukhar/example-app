@@ -1,6 +1,8 @@
 <select name='assignee_id'>
     @foreach($users as $user)
-        <option {{ $selected == $user['id'] ? 'selected' : ''}} 
+        <option {{ 
+            isset($selected) && $selected == $user['id'] ? 'selected' : ''
+        }} 
         value='{{ $user['id'] }}'>{{ $user['id'] }}</option>
     @endforeach
 </select>
