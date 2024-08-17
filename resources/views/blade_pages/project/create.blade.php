@@ -3,7 +3,9 @@
 @section('header', 'Создать новый проект')
 
 @section('content')
-<x-form action='{{route("projects.store")}}' method='post'>
+
+<x-errors/>
+<x-form action='{{ route("projects.store") }}' method='post'>
     @csrf
     <x-label name="title">{{ __('Название') }} </x-label>
     <x-input name="title" autofocus/>

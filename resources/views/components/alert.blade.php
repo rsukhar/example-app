@@ -1,7 +1,10 @@
-@props(['alert'])
-
-<div {{ $attributes }}>
-    <h3>{{ $alert['title'] }}</h3>
-    <p>{{ $alert['message'] }}</p>
-    <p>{{ $alert['type'] }}</p>
+<div {{ $attributes->merge([
+    'type' => 'success'
+]) }}>
+    <h3>
+        {{ $heading }}
+    </h3>
+    <p>
+        {{ $slot }}
+    </p>
 </div>
