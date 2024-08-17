@@ -20,7 +20,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->scoped(['user' => 'username']);
 })->where(['user' => '[a-zA-Z0-9]+']);
 
-Route::post('projects', [ProjectController::class, 'store'])->name('projects.store')->withoutMiddleware([AuthorizeMiddleware::class]);
-Route::put('projects/{id}', [ProjectController::class, 'update'])->name('projects.update')->withoutMiddleware([AuthorizeMiddleware::class]);
 Route::resource('projects', ProjectController::class);
 

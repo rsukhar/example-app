@@ -7,9 +7,19 @@ use App\Models\User;
 use App\Models\Project;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
+use App\Http\Middleware\AuthorizeMiddleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ProjectController extends Controller
+class ProjectController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware(AuthorizeMiddleware::class, except: ['store', 'update'])
+        ];
+    }
+    
     /**
      * Display a listing of the resource.
      */
@@ -44,7 +54,7 @@ class ProjectController extends Controller
         $project->author_id = $author_id;
         $project->save();
 
-        return redirect('projects');
+        return redirect()->route('projects.index', ['access' => 'yes']);
     }
 
     /**
@@ -79,11 +89,10 @@ class ProjectController extends Controller
     public function update(UpdateProjectRequest $request, int $id)
     {
         $validated = $request->validated();
-
         $project = Project::findOrFail($id);
         $project->fill($request->all());
         $project->save();
-        return redirect('projects');
+        return redirect()->route('projects.index', ['access' => 'yes']);
     }
 
     /**
