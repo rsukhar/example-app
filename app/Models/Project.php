@@ -9,13 +9,16 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $guarded = [
-        ''
+    protected $fillable = [
+        'title',
+        'author_id',
+        'assignee_id',
+        'deadline_date',
     ];
 
-    public function author()
+    public function owner()
     {
-        return $this->belongsTo('App\Models\User', 'author_id');
+        return $this->belongsTo('App\Models\User', 'owner_id');
     }
 
     public function assignee()

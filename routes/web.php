@@ -18,7 +18,6 @@ Route::post('/login/', [UserController::class, 'loginPost']);
 Route::middleware('auth')->group(function () {
     Route::post('/logout/', [UserController::class, 'logout']);
     Route::resource('users', UserController::class)->scoped(['user' => 'username']);
+    Route::resource('projects', ProjectController::class);
 })->where(['user' => '[a-zA-Z0-9]+']);
-
-Route::resource('projects', ProjectController::class);
 

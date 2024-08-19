@@ -34,7 +34,6 @@ class UserController extends Controller
     {
         if (Auth::attempt($request->validated(), $request->remember)) {
             $request->session()->regenerate();
-
             return redirect()->intended();
         }
 

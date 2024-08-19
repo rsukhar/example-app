@@ -69,7 +69,7 @@ class User extends Authenticatable
 
     public function ownedProjects()
     {
-        return $this->hasMany('App\Models\Project', 'author_id');
+        return $this->hasMany('App\Models\Project', 'owner_id');
     }
 
     public function assignedProjects()

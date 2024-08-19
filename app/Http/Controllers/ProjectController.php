@@ -47,19 +47,9 @@ class ProjectController extends Controller implements HasMiddleware
      * 
      * POST /projects
      */
-    public function store(StoreProjectRequest $request)
+    public function store(StoreProjectRequest $request, Project $project)
     {
-        // В контроллер будет передаваться id пользователя, 
-        // который создает проект
-        $author_id = 1;
-
-        $validated = $request->validated();
-
-        $project = new Project();
-        $project->fill($validated);
-        $project->author_id = $author_id;
-        $project->save();
-
+        $project::create($request->all() + ['author_id' => auth()->id()]);
         return redirect()->route('projects.index', ['access' => 'yes']);
     }
 
@@ -68,9 +58,8 @@ class ProjectController extends Controller implements HasMiddleware
      * 
      * GET /projects/{id}
      */
-    public function show(string $id)
+    public function show(Project $project)
     {
-        $project = Project::findOrFail($id);
         return view('blade_pages.project.show', ['project' => $project]);
     }
 
@@ -79,11 +68,10 @@ class ProjectController extends Controller implements HasMiddleware
      * 
      * GET /projects/{id}/edit
      */
-    public function edit(string $id)
+    public function edit(Project $project)
     {
         $users = User::all();
-        $project = Project::findOrFail($id);
-        return view('blade_pages.project.edit', ['id' => $project->id, 'projectToEdit' => $project, 'users' => $users]);
+        return view('blade_pages.project.edit', ['project' => $project, 'users' => $users]);
     }
 
     /**
@@ -91,12 +79,9 @@ class ProjectController extends Controller implements HasMiddleware
      * 
      * PUT /projects/{id}
      */
-    public function update(UpdateProjectRequest $request, int $id)
+    public function update(UpdateProjectRequest $request, Project $project)
     {
-        $validated = $request->validated();
-        $project = Project::findOrFail($id);
-        $project->fill($request->all());
-        $project->save();
+        $project->update($request->validated());
         return redirect()->route('projects.index', ['access' => 'yes']);
     }
 
@@ -105,8 +90,8 @@ class ProjectController extends Controller implements HasMiddleware
      * 
      * DELETE /projects/{id}
      */
-    public function destroy(string $id)
+    public function destroy(Project $project)
     {
-        return 'Удалить проект с id = ' . $id;
+        return 'Удалить проект с id = ' . $project->id;
     }
 }
