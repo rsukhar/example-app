@@ -21,7 +21,9 @@ class ProjectController extends Controller implements HasMiddleware
     }
     
     /**
-     * Display a listing of the resource.
+     * Список проектов
+     * 
+     * GET /projects
      */
     public function index()
     {
@@ -30,7 +32,9 @@ class ProjectController extends Controller implements HasMiddleware
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Форма для создания проектов
+     * 
+     * GET /projects/create
      */
     public function create()
     {
@@ -39,7 +43,9 @@ class ProjectController extends Controller implements HasMiddleware
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Сохранить новый проект в БД
+     * 
+     * POST /projects
      */
     public function store(StoreProjectRequest $request)
     {
@@ -58,7 +64,9 @@ class ProjectController extends Controller implements HasMiddleware
     }
 
     /**
-     * Display the specified resource.
+     * Получить проект по id
+     * 
+     * GET /projects/{id}
      */
     public function show(string $id)
     {
@@ -70,7 +78,9 @@ class ProjectController extends Controller implements HasMiddleware
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Форма редактирования проекта
+     * 
+     * GET /projects/{id}/edit
      */
     public function edit(string $id)
     {
@@ -84,7 +94,9 @@ class ProjectController extends Controller implements HasMiddleware
     }
 
     /**
-     * Update the specified resource in storage.
+     * Сохранить изменения в проекте
+     * 
+     * PUT /projects/{id}
      */
     public function update(UpdateProjectRequest $request, int $id)
     {
@@ -96,7 +108,9 @@ class ProjectController extends Controller implements HasMiddleware
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Удалить проект
+     * 
+     * DELETE /projects/{id}
      */
     public function destroy(string $id)
     {
