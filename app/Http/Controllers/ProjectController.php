@@ -71,10 +71,7 @@ class ProjectController extends Controller implements HasMiddleware
     public function show(string $id)
     {
         $project = Project::findOrFail($id);
-        if ($project !== null) {
-            return view('blade_pages.project.show', ['project' => $project]);
-        }
-        abort(404);
+        return view('blade_pages.project.show', ['project' => $project]);
     }
 
     /**
@@ -85,12 +82,8 @@ class ProjectController extends Controller implements HasMiddleware
     public function edit(string $id)
     {
         $users = User::all();
-        $projectToEdit = Project::findOrFail($id);
-        if ($projectToEdit !== null) {
-            $id = $projectToEdit->id;
-            return view('blade_pages.project.edit', ['id' => $id, 'projectToEdit' => $projectToEdit, 'users' => $users]);
-        }
-        abort(404);
+        $project = Project::findOrFail($id);
+        return view('blade_pages.project.edit', ['id' => $project->id, 'projectToEdit' => $project, 'users' => $users]);
     }
 
     /**
