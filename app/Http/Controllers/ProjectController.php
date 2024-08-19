@@ -10,6 +10,7 @@ use App\Http\Requests\Project\ProjectUpdateRequest;
 use App\Http\Middleware\AuthorizeMiddleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 
 class ProjectController extends Controller implements HasMiddleware
 {
@@ -27,7 +28,9 @@ class ProjectController extends Controller implements HasMiddleware
      */
     public function index()
     {
+        Gate::authorize('viewAll', Project::class);
         $projects = Project::all();
+
         return view('blade_pages.project.index', ['projects' => $projects]);
     }
 
@@ -38,7 +41,9 @@ class ProjectController extends Controller implements HasMiddleware
      */
     public function create()
     {
+        Gate::authorize('create', Project::class);
         $users = User::all();
+
         return view('blade_pages.project.create', ['users' => $users]);
     }
 
@@ -49,7 +54,9 @@ class ProjectController extends Controller implements HasMiddleware
      */
     public function store(ProjectStoreRequest $request, Project $project)
     {
+        Gate::authorize('create', Project::class);
         $project::create($request->all() + ['author_id' => auth()->id()]);
+
         return redirect()->route('projects.index', ['access' => 'yes']);
     }
 
@@ -60,6 +67,8 @@ class ProjectController extends Controller implements HasMiddleware
      */
     public function show(Project $project)
     {
+        Gate::authorize('view', $project);
+
         return view('blade_pages.project.show', ['project' => $project]);
     }
 
@@ -70,7 +79,9 @@ class ProjectController extends Controller implements HasMiddleware
      */
     public function edit(Project $project)
     {
+        Gate::authorize('update', $project);
         $users = User::all();
+
         return view('blade_pages.project.edit', ['project' => $project, 'users' => $users]);
     }
 
@@ -81,7 +92,9 @@ class ProjectController extends Controller implements HasMiddleware
      */
     public function update(ProjectUpdateRequest $request, Project $project)
     {
+        Gate::authorize('update', $project);
         $project->update($request->validated());
+
         return redirect()->route('projects.index', ['access' => 'yes']);
     }
 
@@ -92,7 +105,9 @@ class ProjectController extends Controller implements HasMiddleware
      */
     public function destroy(Project $project)
     {   
+        Gate::authorize('delete', $project);
         $project->delete();
+
         return redirect()->route('projects.index', ['access' => 'yes']);
     }
 }
