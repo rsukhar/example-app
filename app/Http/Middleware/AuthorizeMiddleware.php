@@ -15,7 +15,7 @@ class AuthorizeMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->access !== 'yes') abort(403);
+        abort_if($request->access !== 'yes', 403);
         return $next($request);
     }
 }
