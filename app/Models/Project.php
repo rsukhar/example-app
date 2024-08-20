@@ -16,9 +16,15 @@ class Project extends Model
         'deadline_date',
     ];
 
+    protected $casts = [
+        'author_id' => 'integer',
+        'assignee_id' => 'integer',
+        'deadline_date' => 'date'
+    ];
+
     public function owner()
     {
-        return $this->belongsTo('App\Models\User', 'owner_id');
+        return $this->belongsTo('App\Models\User', 'author_id');
     }
 
     public function assignee()
