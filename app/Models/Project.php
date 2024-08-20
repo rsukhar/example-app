@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Contracts\Database\Query\Builder;
 class Project extends Model
 {
     use HasFactory;
@@ -22,13 +22,21 @@ class Project extends Model
         'deadline_date' => 'date'
     ];
 
-    public function owner()
+    public function owner(): BelongsTo
     {
         return $this->belongsTo('App\Models\User', 'author_id');
     }
 
-    public function assignee()
+    public function assignee(): BelongsTo
     {
         return $this->belongsTo('App\Models\User', 'assignee_id');
+    }
+
+    /**
+     * Добавляет к запросу условие «дедлайн истёк»
+     */
+    public function scopeExpired(Builder $query): Builder
+    {
+        return $query->where('deadline_date', '<', now());
     }
 }

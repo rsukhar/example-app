@@ -14,6 +14,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        // Заглушка, чтобы проверка авторизации в API не выбрасывала ошибку
+        'api' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
     'providers' => [
         'users' => [

@@ -67,12 +67,12 @@ class User extends Authenticatable
         return $query;
     }
 
-    public function ownedProjects()
+    public function ownedProjects(): HasMany
     {
         return $this->hasMany('App\Models\Project', 'author_id');
     }
 
-    public function assignedProjects()
+    public function assignedProjects(): HasMany
     {
         return $this->hasMany('App\Models\Project', 'assignee_id');
     }

@@ -131,4 +131,50 @@ class DevController extends Controller
         
         return true;
     }
+
+    /**
+     * Три последних проекта:
+     * - если пользователь авторизован - проекты пользователя
+     * - если не авторизован - проекты любых пользователей
+     * 
+     * GET /dev/getMyLatestThree
+     */
+    public function getMyLatestThree(Request $request): Collection
+    {
+        if (!auth('api')->check()) {
+            return Project::query()
+                        ->orderBy('id', 'desc')
+                        ->limit(3)
+                        ->get();
+        }
+
+        return Project::query()
+                    ->where('author_id', '=', auth('api')->user()->id)
+                    ->ordereBy('id', 'desc')
+                    ->limit(3)
+                    ->get();
+    }
+
+    /**
+     * Список с именами пользователей и количеством их проектов
+     * 
+     * GET /dev/userProjects
+     */
+    public function userProjects(): Collection
+    {
+        return User::query()
+                    ->select('username')
+                    ->withCount('ownedProjects as projects_count')
+                    ->get();
+    }
+
+    /**
+     * Количество проектов с просроченным дедлайном
+     * 
+     * GET /dev/getExpiredProjectsCount
+     */
+    public function getExpiredProjectsCount(): int
+    {
+        return Project::expired()->get()->count();
+    }
 }

@@ -30,7 +30,7 @@ class ProjectController extends Controller implements HasMiddleware
     {
         Gate::authorize('viewAll', Project::class);
         $projects = Project::all();
-
+        
         return view('blade_pages.project.index', ['projects' => $projects]);
     }
 
