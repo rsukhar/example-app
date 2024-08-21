@@ -22,7 +22,7 @@ class ProjectPolicy
     public function view(User $user, Project $project): bool
     {
         return ($user->role === 'admin' 
-                || $user->id === $project->author_id
+                || $user->id === $project->owner_id
                 || $user->id === $project->assignee_id
             );
     }
@@ -40,7 +40,7 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project): bool
     {
-        return ($user->role === 'admin' || $user->id === $project->author_id);
+        return ($user->role === 'admin' || $user->id === $project->owner_id);
     }
 
     /**
@@ -48,6 +48,6 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project): bool
     {
-        return ($user->role === 'admin' || $user->id === $project->author_id);
+        return ($user->role === 'admin' || $user->id === $project->owner_id);
     }
 }

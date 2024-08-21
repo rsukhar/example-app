@@ -55,7 +55,7 @@ class ProjectController extends Controller implements HasMiddleware
     public function store(ProjectStoreRequest $request)
     {
         Gate::authorize('create', Project::class);
-        Project::create($request->all() + ['author_id' => auth()->id()]);
+        Project::create($request->all() + ['owner_id' => auth()->id()]);
 
         return redirect()->route('projects.index', ['access' => 'yes']);
     }

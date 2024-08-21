@@ -13,21 +13,21 @@ class Project extends Model
 
     protected $fillable = [
         'title',
-        'author_id',
+        'owner_id',
         'is_active',
         'assignee_id',
         'deadline_date',
     ];
 
     protected $casts = [
-        'author_id' => 'integer',
+        'owner_id' => 'integer',
         'assignee_id' => 'integer',
         'deadline_date' => 'date'
     ];
 
     public function owner(): BelongsTo
     {
-        return $this->belongsTo('App\Models\User', 'author_id');
+        return $this->belongsTo('App\Models\User', 'owner_id');
     }
 
     public function assignee(): BelongsTo

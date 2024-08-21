@@ -51,7 +51,7 @@ class DevController extends Controller
             for($i = 0; $i < 5; $i++){
                 $addedProjects->push(Project::create([
                     'title' => fake()->jobTitle(),
-                    'author_id' => User::inRandomOrder()->first()->id,
+                    'owner_id' => User::inRandomOrder()->first()->id,
                     'is_active' => fake()->boolean(),
                     'assignee_id' => User::inRandomOrder()->first()->id,
                     'deadline_date' => fake()->dateTimeBetween(now(), '+3 years')
@@ -111,7 +111,7 @@ class DevController extends Controller
                 ->first()
             )->update([
                 'title' => fake()->jobTitle(),
-                'author_id' => User::inRandomOrder()->first()->id,
+                'owner_id' => User::inRandomOrder()->first()->id,
                 'is_active' => fake()->boolean(),
                 'assignee_id' => User::inRandomOrder()->first()->id,
                 'deadline_date' => fake()->dateTimeBetween(now(), '+3 years')
@@ -134,7 +134,7 @@ class DevController extends Controller
     public function getMyLatestThree(Request $request): Collection
     {
         return Project::when(auth('api')->check(), function (Builder $builder) {
-                $builder->where('author_id', Auth::id());
+                $builder->where('owner_id', Auth::id());
                })->latest()
                ->limit(3)
                ->get();
