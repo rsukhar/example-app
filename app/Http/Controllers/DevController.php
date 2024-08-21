@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\JsonResponse;
 
 
 class DevController extends Controller
@@ -141,18 +142,13 @@ class DevController extends Controller
      */
     public function getMyLatestThree(Request $request): Collection
     {
-        if (!auth('api')->check()) {
-            return Project::query()
-                        ->orderBy('id', 'desc')
-                        ->limit(3)
-                        ->get();
-        }
+        $query = auth('api')->user() 
+        ? auth('api')->user()
+        : Project::query();
 
-        return Project::query()
-                    ->where('author_id', '=', auth('api')->user()->id)
-                    ->ordereBy('id', 'desc')
-                    ->limit(3)
-                    ->get();
+        return $query->orderBy('id', 'desc')
+                     ->limit(3)
+                     ->get();
     }
 
     /**
@@ -173,8 +169,8 @@ class DevController extends Controller
      * 
      * GET /dev/getExpiredProjectsCount
      */
-    public function getExpiredProjectsCount(): int
+    public function getExpiredProjectsCount(): JsonResponse
     {
-        return Project::expired()->get()->count();
+        return response()->json(['expired_projects_count' => Project::expired()->count()]);
     }
 }
