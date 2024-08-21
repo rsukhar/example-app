@@ -44,23 +44,25 @@ class DevController extends Controller
      * 
      * GET /dev/addProject
      */
-    public function addProject(): bool
+    public function addProject()
     {
+        $addedProjects = collect();
         try {
             for($i = 0; $i < 5; $i++){
-                Project::create([
+                $addedProjects->push(Project::create([
                     'title' => fake()->jobTitle(),
                     'author_id' => fake()->randomElement(User::pluck('id')),
+                    'is_active' => fake()->boolean(),
                     'assignee_id' => fake()->randomElement(User::pluck('id')),
                     'deadline_date' => fake()->dateTimeBetween(now(), '+3 years')
-                ]);
+                ]));
             }
         } catch (Throwable $e) {
             Log::error(__METHOD__ . ": " . $e->getMessage());
-            return false;
+            return $e->getMessage();
         }
         
-        return true;
+        return $addedProjects;
     }
 
     /**
@@ -70,22 +72,14 @@ class DevController extends Controller
      */
     public function getAdminProjects()
     {
-        $projects = collect();
         try {
-            foreach(Project::all() as $project){
-                if($project->owner->role === "admin") {
-                    $projects->push([ 
-                        'project' => $project,
-                        'owner' => $project->owner
-                    ]);
-                }
-            }
+            return User::where('role', 'admin')
+                        ->with('ownedProjects')
+                        ->get();
         } catch (Throwable $e) {
             Log::error(__METHOD__ . ": " . $e->getMessage());
-            return false;
+            return $e->getMessage();
         }
-
-        return $projects;
     }
 
     /**
@@ -94,19 +88,17 @@ class DevController extends Controller
      * 
      * GET /dev/getExpired
      */
-    public function getExpired(): Collection
+    public function getExpired()
     {
         try {
-            $projects = Project::query()
+            return Project::query()
                     ->where('deadline_date', "<", now())
                     ->orderBy('deadline_date')
                     ->get();
         } catch (Throwable $e) {
             Log::error(__METHOD__ . ": " . $e->getMessage());
-            return false;
+            return $e->getMessage();
         }
-
-        return $projects;
     }
 
     /**
@@ -117,20 +109,22 @@ class DevController extends Controller
     public function updateRandom()
     {
         try {
-            $project = Project::inRandomOrder()
-            ->first()
-            ->update([
+            $updatedProject = tap(
+                Project::inRandomOrder()
+                ->first()
+            )->update([
                 'title' => fake()->jobTitle(),
                 'author_id' => fake()->randomElement(User::pluck('id')),
+                'is_active' => fake()->boolean(),
                 'assignee_id' => fake()->randomElement(User::pluck('id')),
                 'deadline_date' => fake()->dateTimeBetween(now(), '+3 years')
             ]);
         } catch (Throwable $e) {
             Log::error(__METHOD__ . ": " . $e->getMessage());
-            return false;
+            return $e->getMessage();
         }
         
-        return true;
+        return $updatedProject;
     }
 
     /**

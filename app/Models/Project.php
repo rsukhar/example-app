@@ -14,6 +14,7 @@ class Project extends Model
     protected $fillable = [
         'title',
         'author_id',
+        'is_active',
         'assignee_id',
         'deadline_date',
     ];
