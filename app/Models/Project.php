@@ -40,6 +40,6 @@ class Project extends Model
      */
     public function scopeExpired(Builder $query): Builder
     {
-        return $query->where('deadline_date', '<', now());
+        return $query->where('deadline_date', '<', date('Y-m-d'));
     }
 }

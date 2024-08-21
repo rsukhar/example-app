@@ -89,10 +89,9 @@ class DevController extends Controller
     public function getExpired()
     {
         try {
-            return Project::query()
-                    ->where('deadline_date', '<', date('Y-m-d'))
-                    ->orderBy('deadline_date')
-                    ->get();
+            return Project::where('deadline_date', '<', date('Y-m-d'))
+                            ->orderBy('deadline_date')
+                            ->get();
         } catch (Throwable $e) {
             Log::error(__METHOD__ . ': ' . $e->getMessage());
             return $e->getMessage();
@@ -134,13 +133,11 @@ class DevController extends Controller
      */
     public function getMyLatestThree(Request $request): Collection
     {
-        $query = auth('api')->user() 
-        ? auth('api')->user()->ownedProjects()
-        : Project::query();
-
-        return $query->orderBy('id', 'desc')
-                     ->limit(3)
-                     ->get();
+        return Project::when(auth('api')->check(), function (Builder $builder) {
+                $builder->where('author_id', Auth::id());
+               })->latest()
+               ->limit(3)
+               ->get();
     }
 
     /**
@@ -150,8 +147,7 @@ class DevController extends Controller
      */
     public function userProjects(): Collection
     {
-        return User::query()
-                    ->select('username')
+        return User::select('username')
                     ->withCount('ownedProjects as projects_count')
                     ->get();
     }
