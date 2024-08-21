@@ -51,14 +51,14 @@ class DevController extends Controller
             for($i = 0; $i < 5; $i++){
                 $addedProjects->push(Project::create([
                     'title' => fake()->jobTitle(),
-                    'author_id' => fake()->randomElement(User::pluck('id')),
+                    'author_id' => User::inRandomOrder()->first()->id,
                     'is_active' => fake()->boolean(),
-                    'assignee_id' => fake()->randomElement(User::pluck('id')),
+                    'assignee_id' => User::inRandomOrder()->first()->id,
                     'deadline_date' => fake()->dateTimeBetween(now(), '+3 years')
                 ]));
             }
         } catch (Throwable $e) {
-            Log::error(__METHOD__ . ": " . $e->getMessage());
+            Log::error(__METHOD__ . ': ' . $e->getMessage());
             return $e->getMessage();
         }
         
@@ -73,11 +73,9 @@ class DevController extends Controller
     public function getAdminProjects()
     {
         try {
-            return User::where('role', 'admin')
-                        ->with('ownedProjects')
-                        ->get();
+            return Project::with('owner')->whereRelation('owner', 'role', 'admin')->get();
         } catch (Throwable $e) {
-            Log::error(__METHOD__ . ": " . $e->getMessage());
+            Log::error(__METHOD__ . ': ' . $e->getMessage());
             return $e->getMessage();
         }
     }
@@ -92,11 +90,11 @@ class DevController extends Controller
     {
         try {
             return Project::query()
-                    ->where('deadline_date', "<", now())
+                    ->where('deadline_date', '<', date('Y-m-d'))
                     ->orderBy('deadline_date')
                     ->get();
         } catch (Throwable $e) {
-            Log::error(__METHOD__ . ": " . $e->getMessage());
+            Log::error(__METHOD__ . ': ' . $e->getMessage());
             return $e->getMessage();
         }
     }
@@ -114,13 +112,13 @@ class DevController extends Controller
                 ->first()
             )->update([
                 'title' => fake()->jobTitle(),
-                'author_id' => fake()->randomElement(User::pluck('id')),
+                'author_id' => User::inRandomOrder()->first()->id,
                 'is_active' => fake()->boolean(),
-                'assignee_id' => fake()->randomElement(User::pluck('id')),
+                'assignee_id' => User::inRandomOrder()->first()->id,
                 'deadline_date' => fake()->dateTimeBetween(now(), '+3 years')
             ]);
         } catch (Throwable $e) {
-            Log::error(__METHOD__ . ": " . $e->getMessage());
+            Log::error(__METHOD__ . ': ' . $e->getMessage());
             return $e->getMessage();
         }
         
