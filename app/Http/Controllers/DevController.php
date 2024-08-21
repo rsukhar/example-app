@@ -137,7 +137,7 @@ class DevController extends Controller
     public function getMyLatestThree(Request $request): Collection
     {
         $query = auth('api')->user() 
-        ? auth('api')->user()
+        ? auth('api')->user()->ownedProjects()
         : Project::query();
 
         return $query->orderBy('id', 'desc')
