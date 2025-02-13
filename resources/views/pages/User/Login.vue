@@ -1,14 +1,17 @@
 <template>
     <div class="b-login">
         <form class="b-form label_top" :class="{ loading: form.processing }" @submit.prevent="submit">
-            <b-formrow title="Логин" :error="errors.username">
-                <el-input type="username" v-model="form.username" />
+            <b-formrow title="Имя пользователя" :error="errors.username">
+                <InputText type="username" v-model="form.username" />
             </b-formrow>
             <b-formrow title="Пароль" :error="errors.password">
-                <el-input type="password" v-model="form.password" />
+                <InputText type="password" v-model="form.password" />
             </b-formrow>
             <b-formrow>
-                <el-switch v-model="form.remember" active-text="Запомнить меня" />
+                <div class="g-hwrapper">
+                    <ToggleSwitch v-model="form.remember" input-id="switch1" />
+                    <label for="switch1">Запомнить меня</label>
+                </div>
             </b-formrow>
             <b-formrow>
                 <button class="g-button">Войти</button>
@@ -20,7 +23,6 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
 import BFormrow from "../../blocks/BFormrow.vue";
-import { ElInput, ElSwitch } from "element-plus";
 
 const props = defineProps({
     errors: {

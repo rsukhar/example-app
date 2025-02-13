@@ -38,7 +38,7 @@
 
             <div class="g-stat">
                 <div>Дата регистрации</div>
-                <div>{{ $filters.toLocalTime(user.created_at).split(' ')[0] }}</div>
+                <div>{{ toLocalTime(user.created_at).split(' ')[0] }}</div>
             </div>
         </div>
 
@@ -46,14 +46,13 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+
+import { toLocalTime } from "../../../js/helpers.js";
 
 const props = defineProps({
     user: Object,
     userRoles: Object
 });
-
-const $filters = inject('$filters');
 
 </script>
 

@@ -6,7 +6,7 @@
 
 1. **[Laravel 11](https://laravel.com/docs/11.x)** — PHP-фреймворк
 2. **[Vue3](https://vuejs.org/)** — JS-фреймворк (используем только Composition API)
-3. **[Element Plus](https://element-plus.org/)** — Библиотека компонентов для Vue3
+3. **[PrimeVue](https://primevue.org)** — Библиотека компонентов для Vue3
 4. **[VueUse](https://vueuse.org/)** — Библиотека вспомогательных методов для Vue3
 5. **[InertiaJS](https://inertiajs.com/)** — JS-фреймворк для монолитного приложения Laravel + Vue3.
 6. **SASS**

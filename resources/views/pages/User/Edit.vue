@@ -17,25 +17,33 @@
 
     <form class="b-form" :class="{ loading: form.processing }" @submit.prevent="submit">
         <b-formrow title="Логин" :error="errors.username" v-if="canEditAll">
-            <el-input type="text" v-model="form.username" />
+            <InputText type="text" v-model="form.username" />
         </b-formrow>
         <b-formrow title="Имя для отображения" :error="errors.first_name">
-            <el-input type="text" v-model="form.first_name" />
+            <InputText type="text" v-model="form.first_name" />
         </b-formrow>
         <b-formrow title="Email" :error="errors.email">
-            <el-input type="email" v-model="form.email" />
+            <InputText type="email" v-model="form.email" />
         </b-formrow>
         <b-formrow title="Пароль" hint="Введите для изменения пароля" :error="errors.password">
-            <el-input type="password" v-model="form.password" />
+            <InputText type="password" v-model="form.password" />
         </b-formrow>
         <b-formrow class="type_switch" :error="errors.is_blocked" v-if="canEditAll">
-            <el-switch v-model="form.is_blocked" active-text="Заблокирован" />
+            <div class="g-hwrapper">
+                <toggle-switch v-model="form.is_blocked" input-id="switch1" />
+                <label for="switch1">Заблокирован</label>
+            </div>
         </b-formrow>
+
         <b-formrow title="Роль" :error="errors.role" v-if="canEditAll">
-            <el-radio-group v-model="form.role">
-                <el-radio-button v-for="(oTitle, oValue) in userRoles" :key="oValue" :label="oTitle" :value="oValue" />
-            </el-radio-group>
+            <RadioButtonGroup v-model="form.role">
+                <div class="g-hwrapper" v-for="(oTitle, oValue) in userRoles" :key="oValue">
+                    <RadioButton :input-id="`input-${oValue}`" :value="oValue" />
+                    <label :for="`input-${oValue}`">{{ oTitle }}</label>
+                </div>
+            </RadioButtonGroup>
         </b-formrow>
+
         <b-formrow>
             <button class="g-button">Сохранить изменения</button>
         </b-formrow>
@@ -45,7 +53,7 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
 import BFormrow from "../../blocks/BFormrow.vue";
-import { ElDatePicker, ElInput, ElRadioButton, ElRadioGroup, ElSelect, ElOption, ElSwitch } from "element-plus";
+
 
 const props = defineProps({
     id: Number,

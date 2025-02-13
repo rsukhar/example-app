@@ -1,0 +1,63 @@
+.p-inputtext {
+    &:focus {
+        border-color: var(--primary) !important;
+    }
+}
+
+.p-toggleswitch {
+    &-checked {
+        .p-toggleswitch-slider {
+            background-color: var(--primary) !important;
+        }
+    }
+}
+
+.p-radiobutton {
+    &-group {
+        gap: 15px;
+
+        * {
+            cursor: pointer;
+        }
+    }
+
+    &-checked {
+        .p-radiobutton-box {
+            background-color: var(--primary) !important;
+            border-color: var(--primary) !important;
+        }
+    }
+
+}
+
+.p-checkbox {
+    &-group {
+        gap: 15px;
+
+        * {
+            cursor: pointer;
+        }
+    }
+
+    &-checked {
+        .p-checkbox-box {
+            background-color: var(--primary) !important;
+            border-color: var(--primary) !important;
+        }
+    }
+
+}
+
+.p-datepicker {
+    &-day {
+        &-selected {
+            background-color: var(--primary) !important;
+
+            &-range {
+                background-color: var(--primary-light) !important;
+                color: var(--white) !important;
+            }
+        }
+    }
+
+}

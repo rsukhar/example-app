@@ -1,7 +1,7 @@
 <template>
     <div class="b-header-logo">
         <Link class="b-logo" :href="href">
-            <FontAwesomeIcon icon="star" />
+            <font-awesome-icon icon="star" />
             <span>ExampleApp</span>
         </Link>
     </div>

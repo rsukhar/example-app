@@ -1,7 +1,7 @@
-@import "normalize.css";
-@import "variables";
-@import "element-plus-styling";
-@import "helpers";
+@use "normalize.css";
+@use "variables";
+@use "helpers";
+@use "prime-vue-styling";
 
 html {
 	height: 100%;

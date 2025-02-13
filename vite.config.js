@@ -1,18 +1,19 @@
-import { defineConfig, splitVendorChunkPlugin } from 'vite';
+import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue'
-import ElementPlus from 'unplugin-element-plus/vite'
+import Components from 'unplugin-vue-components/vite';
+import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 
 export default defineConfig({
     css: {
         preprocessorOptions: {
             scss: {
-                additionalData: `@import "resources/css/mixins.scss";`
+                api: 'modern-compiler',
+                additionalData: `@use "/resources/css/mixins" as *;`
             }
         },
     },
     plugins: [
-        splitVendorChunkPlugin(),
         vue({
             // Вот это нужно, чтобы абсолютные пути к картинкам работали
             template: {
@@ -21,11 +22,13 @@ export default defineConfig({
                 },
             },
         }),
-        ElementPlus({
-            // options
-        }),
         laravel({
             input: ['resources/js/app.js'],
+        }),
+        Components({
+            resolvers: [
+                PrimeVueResolver()
+            ]
         }),
     ],
 });

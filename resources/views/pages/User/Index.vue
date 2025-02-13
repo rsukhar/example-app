@@ -1,6 +1,6 @@
 <template>
     <Head title="Пользователи" />
-
+    <confirm-dialog></confirm-dialog>
     <div class="g-titlebar">
         <h1>Пользователи</h1>
         <Link href="/users/create/" class="g-button outlined">Создать пользователя</Link>
@@ -16,49 +16,64 @@
                     ...userRoles
                 }
             },
+
             q: {
                 type: 'text',
                 placeholder: 'Поиск по имени пользователя',
-                style: 'width: 350px; max-width: 350px;'
+                style: 'width: 100%; max-width: 350px;'
             }
         }"
     />
 
-    <el-table :data="users.data" table-layout="auto" :class="{ loading: filter.loading }">
-        <el-table-column label="Пользователь">
-            <template #default="{ row }">
-                <Link :href="`/users/${row.username}/`">{{ row.username }}</Link>
-                <div class="g-status red" v-if="row.is_blocked" style="margin-left: 1rem">Заблокирован</div>
-            </template>
-        </el-table-column>
-        <el-table-column label="Email" prop="email" />
-        <el-table-column label="Имя" prop="first_name" />
-        <el-table-column label="Регистрация" align="center">
-            <template #default="{ row }">
-                {{ $filters.toLocalTime(row.created_at).split(' ')[0] }}
-            </template>
-        </el-table-column>
-        <el-table-column align="right">
-            <template #default="{ row }">
-                <a @click="deleteUser(row.username)" title="Удалить" class="g-actionicon" v-if="row.role !== 'admin'">
-                    <font-awesome-icon icon="trash" />
-                </a>
-                <Link :href="`/users/${row.username}/edit/`" class="g-actionicon">
-                    <font-awesome-icon icon="pen-to-square" />
-                </Link>
-            </template>
-        </el-table-column>
-    </el-table>
+    <div class="g-tablewrapper" v-if="Object.keys(users.data).length || filter.length">
+        <table class="g-table">
+            <thead>
+            <tr>
+                <td>Пользователь</td>
+                <td>Email</td>
+                <td>Имя</td>
+                <td>Регистрация</td>
+                <td></td>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr v-for="user in users.data" :key="user.id">
+                <td>
+                    <Link :href="`/users/${user.username}/`">{{ user.username }}</Link>
+                    <div class="g-status red" v-if="user.is_blocked" style="margin-left: 1rem">Заблокирован</div>
+                </td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ toLocalTime(user.created_at).split(' ')[0] }}</td>
+                <td>
+                    <a @click="deleteUser(user.username)" title="Удалить" class="g-actionicon"
+                       v-if="user.role !== 'admin'">
+                        <font-awesome-icon icon="trash" />
+                    </a>
+                    <Link :href="`/users/${user.username}/edit/`" class="g-actionicon">
+                        <font-awesome-icon icon="pen-to-square" />
+                    </Link>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
 
     <b-pagination :links="users.links" :total="users.total" />
 </template>
 
 <script setup>
-import { inject, reactive } from 'vue';
+import { reactive } from 'vue';
 import { router } from '@inertiajs/vue3';
-import BFilter from "../../blocks/BFilter.vue";
 import BPagination from "../../blocks/BPagination.vue";
-import { ElMessageBox, ElTable, ElTableColumn } from "element-plus";
+import { toLocalTime } from "../../../js/helpers.js";
+import { useConfirm } from "primevue";
+import BFilter from "../../blocks/BFilter.vue";
+
 
 const props = defineProps({
     users: Object,
@@ -71,23 +86,33 @@ const props = defineProps({
     },
 });
 
-const $filters = inject('$filters');
-
 const filter = reactive({
     ...props.initialFilter
 });
 
+const confirm = useConfirm();
+
 function deleteUser(username) {
-    ElMessageBox.confirm(
-        `Вы действительно хотите удалить пользователя «${username}»?`,
-        'Подтверждение удаления', {
-            confirmButtonText: 'Да',
-            cancelButtonText: 'Нет',
-            confirmButtonClass: 'g-button',
-            cancelButtonClass: 'g-button outlined'
+
+    confirm.require({
+        message: `Вы действительно хотите удалить пользователя «${username}»?`,
+        header: 'Подтверждение удаления',
+        rejectProps: {
+            label: 'Нет',
+            severity: 'secondary1',
+            outlined: true,
+            classList: 'g-button outlined'
+            //  class: 'g-button outlined',
+        },
+        acceptProps: {
+            label: 'Да',
+            classList: 'g-button'
+        },
+        accept: () => {
+            router.delete(`/users/${username}`);
+        },
+        reject: () => {
         }
-    ).then(() => {
-        router.delete(`/users/${username}`);
     });
 }
 </script>
