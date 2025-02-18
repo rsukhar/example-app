@@ -26,7 +26,7 @@
             <InputText type="email" v-model="form.email" />
         </b-formrow>
         <b-formrow title="Пароль" hint="Введите для изменения пароля" :error="errors.password">
-            <InputText type="password" v-model="form.password" />
+            <InputText type="password" autocomplete="false" v-model="form.password" />
         </b-formrow>
         <b-formrow class="type_switch" :error="errors.is_blocked" v-if="canEditAll">
             <div class="g-hwrapper">
@@ -36,12 +36,15 @@
         </b-formrow>
 
         <b-formrow title="Роль" :error="errors.role" v-if="canEditAll">
-            <RadioButtonGroup v-model="form.role">
-                <div class="g-hwrapper" v-for="(oTitle, oValue) in userRoles" :key="oValue">
-                    <RadioButton :input-id="`input-${oValue}`" :value="oValue" />
-                    <label :for="`input-${oValue}`">{{ oTitle }}</label>
+            <div type="button" class="p-radiobutton-group">
+                <div class="p-radiobutton-group-item" v-for="(oTitle, oValue) in userRoles" :key="oValue">
+                    <input type="radio" name="radiogroup" :id="`input-${oValue}`" :value="oValue"
+                           v-model="form.role">
+                    <label :for="`input-${oValue}`">
+                        {{ oTitle }}
+                    </label>
                 </div>
-            </RadioButtonGroup>
+            </div>
         </b-formrow>
 
         <b-formrow>

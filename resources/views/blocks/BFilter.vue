@@ -4,16 +4,18 @@
              :key="fieldName">
             <div class="b-filter-field-title" v-if="field.title">{{ field.title }}</div>
             <template v-if="field.type === 'radio'">
-                <RadioButtonGroup :model-value="modelValue[fieldName] ?? ''"
-                                  @update:modelValue="(newValue) => set(fieldName, newValue)">
-                    <div class="g-hwrapper" v-for="(oTitle, oValue) in field.options" :key="oValue">
-                        <RadioButton :input-id="`input-${oValue}`" :value="oValue" />
+                <div type="button" class="p-radiobutton-group">
+                    <div class="p-radiobutton-group-item" v-for="(oTitle, oValue) in field.options" :key="oValue">
+                        <input type="radio" name="radiogroup" :id="`input-${oValue}`" :value="oValue"
+                               :model-value="modelValue[fieldName] ?? ''"
+                               :checked="modelValue[fieldName] === oValue || oValue === ''"
+                               @change="(event) => set(fieldName, event.target.value)">
                         <label :for="`input-${oValue}`">
                             <font-awesome-icon v-if="field.icons && field.icons[oValue]" :icon="field.icons[oValue]" />
                             {{ oTitle }}
                         </label>
                     </div>
-                </RadioButtonGroup>
+                </div>
             </template>
 
             <template v-else-if="field.type === 'select'">
@@ -77,6 +79,27 @@
         </div>
     </div>
 
+    <!--    <RadioButtonGroup type="button" unstyled class="p-radiobutton-group">
+            <div class="p-radiobutton-group-item">
+                <input type="radio" name="radiogroup" id="r1" checked>
+                <label for="r1">Option 1</label>
+            </div>
+        </RadioButtonGroup>-->
+    <!--
+        <div class="radio-group" role="group" aria-label="Basic radio toggle button group">
+            <div class="radio-group__item">
+                <input type="radio" name="radiogroup" id="r1" checked>
+                <label for="r1">Option 1</label>
+            </div>
+            <div class="radio-group__item">
+                <input type="radio" name="radiogroup" id="r2">
+                <label for="r2">Option 2</label>
+            </div>
+            <div class="radio-group__item">
+                <input type="radio" name="radiogroup" id="r3">
+                <label for="r3">Long Special Option </label>
+            </div>
+        </div>-->
 </template>
 
 <script setup>
@@ -181,6 +204,60 @@ const updateDebounced = debounce((fn) => {
 
         &.type_select, &.type_treeSelect {
             width: 200px;
+        }
+    }
+}
+
+// radiobutton group
+
+input[type="radio"] {
+    appearance: none;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+}
+
+.radio-group {
+    display: flex;
+    padding: 16px;
+
+    &__item {
+        min-width: 96px;
+        overflow: hidden;
+        display: grid;
+        cursor: pointer;
+        flex-shrink: 0;
+
+        &:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+
+        &:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+
+        label {
+            grid-area: 1/1;
+            padding: 8px 16px;
+            text-align: center;
+        }
+
+        input {
+            grid-area: 1/1;
+            background-color: #eee;
+
+            &:hover {
+                background-color: #ddd;
+            }
+
+            &:checked {
+                background-color: #8a3ffc;
+
+                & + label {
+                    color: white;
+                    cursor: default;
+                }
+            }
         }
     }
 }
