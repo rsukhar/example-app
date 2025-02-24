@@ -62,8 +62,8 @@
 
     </div>
 
-
-    <b-pagination :links="users.links" :total="users.total" />
+    <b-pagination :links="users.links" :per-page="users.per_page"  :total="users.total" :from="users.from"
+                  :to="users.to" />
 </template>
 
 <script setup>

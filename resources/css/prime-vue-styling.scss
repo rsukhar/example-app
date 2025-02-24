@@ -1,8 +1,11 @@
 .p-inputtext {
-    border-color: var(--primary) !important;
+    border-color: var(--border) !important;
 
     &::placeholder {
-        color: var(--primary) !important;
+        color: var(--text-light) !important;
+    }
+    &:focus {
+        border-color: var(--primary)!important;
     }
 
     padding-block: unset !important;
@@ -35,7 +38,7 @@ input[type="radio"] {
             overflow: hidden;
             display: grid;
             flex-shrink: 0;
-            border: 1px solid var(--primary);
+            border: 1px solid var(--border);
 
             input, label {
                 cursor: pointer;
@@ -57,7 +60,7 @@ input[type="radio"] {
                 grid-area: 1/1;
                 padding: 0 1.5em;
                 line-height: var(--field-height);
-                color: var(--primary);
+                color: var(--text);
                 text-align: center;
             }
 
