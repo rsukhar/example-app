@@ -25,6 +25,14 @@ class DevController extends Controller
 
         return null;
     }
+
+    public function ui()
+    {
+        return inertia('Page/Ui', [
+
+        ]);
+    }
+
     public function test()
     {
     }
