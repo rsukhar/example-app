@@ -6,46 +6,44 @@
     <div class="g-titlebar">
         <h1>Редактирование аккаунта</h1>
         <Link href="/users/" class="right" v-if="canEditAll">
-            <font-awesome-icon icon="rotate-left" />
+            <FontAwesomeIcon icon="rotate-left" />
             Вернуться к списку пользователей
         </Link>
         <Link :href="`/users/${values.username}`" class="right" v-else>
-            <font-awesome-icon icon="rotate-left" />
+            <FontAwesomeIcon icon="rotate-left" />
             Вернуться к профилю
         </Link>
     </div>
 
-    <form class="b-form" :class="{ loading: form.processing }" @submit.prevent="submit">
-        <b-formrow title="Логин" :error="errors.username" v-if="canEditAll">
-            <el-input type="text" v-model="form.username" />
-        </b-formrow>
-        <b-formrow title="Имя для отображения" :error="errors.first_name">
-            <el-input type="text" v-model="form.first_name" />
-        </b-formrow>
-        <b-formrow title="Email" :error="errors.email">
-            <el-input type="email" v-model="form.email" />
-        </b-formrow>
-        <b-formrow title="Пароль" hint="Введите для изменения пароля" :error="errors.password">
-            <el-input type="password" v-model="form.password" />
-        </b-formrow>
-        <b-formrow class="type_switch" :error="errors.is_blocked" v-if="canEditAll">
-            <el-switch v-model="form.is_blocked" active-text="Заблокирован" />
-        </b-formrow>
-        <b-formrow title="Роль" :error="errors.role" v-if="canEditAll">
-            <el-radio-group v-model="form.role">
-                <el-radio-button v-for="(oTitle, oValue) in userRoles" :key="oValue" :label="oTitle" :value="oValue" />
-            </el-radio-group>
-        </b-formrow>
-        <b-formrow>
-            <button class="g-button">Сохранить изменения</button>
-        </b-formrow>
-    </form>
+    <SForm v-form="form" :action="`/users/${props.values.username}`" titles-at-left>
+        <SFormRow title="Логин *" name="username">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Имя для отображения" name="first_name">
+            <SInput/>
+        </SFormRow>
+        <SFormRow title="Email" name="email">
+            <SInput type="email"/>
+        </SFormRow>
+        <SFormRow title="Пароль *" name="password" hint="Введите для изменения пароля">
+            <SInput type="password"/>
+        </SFormRow>
+        <SFormRow name="is_blocked" v-if="canEditAll">
+            <SSwitch>Заблокирован</SSwitch>
+        </SFormRow>
+        <SFormRow title="Роль" name="role" v-if="canEditAll">
+            <SRadioGroup :options="userRoles" buttons/>
+        </SFormRow>
+        <SFormRow>
+            <SButton style="width:210px">Сохранить изменения</SButton>
+        </SFormRow>
+    </SForm>
 </template>
 
 <script setup>
 import { useForm } from '@inertiajs/vue3';
-import BFormrow from "../../blocks/BFormrow.vue";
-import { ElDatePicker, ElInput, ElRadioButton, ElRadioGroup, ElSelect, ElOption, ElSwitch } from "element-plus";
+import { SForm, SFormRow, SInput, SSwitch, SButton, SRadioGroup } from "startup-ui";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const props = defineProps({
     id: Number,
@@ -61,8 +59,4 @@ const form = useForm({
     // Пустое значение пароля
     password: ''
 });
-
-function submit() {
-    form.submit('put', `/users/${props.values.username}`);
-}
 </script>

@@ -6,59 +6,50 @@
         <Link href="/users/create/" class="g-button outlined">Создать пользователя</Link>
     </div>
 
-    <b-filter
-        v-model="filter"
-        :fields="{
-            role: {
-                type: 'radio',
-                options: {
-                    '': 'Все',
-                    ...userRoles
-                }
-            },
-            q: {
-                type: 'text',
-                placeholder: 'Поиск по имени пользователя',
-                style: 'width: 350px; max-width: 350px;'
-            }
-        }"
-    />
+    <SFilterGroup>
+        <SFilter name="role">
+            <SRadioGroup :options="userRoles" placeholder="Все" buttons/>
+        </SFilter>
+        <SFilter name="q" :debounce="500">
+            <SInput type="search" placeholder="Поиск по имени пользователя" style="width: 350px"/>
+        </SFilter>
+    </SFilterGroup>
 
-    <el-table :data="users.data" table-layout="auto" :class="{ loading: filter.loading }">
-        <el-table-column label="Пользователь">
-            <template #default="{ row }">
+    <STable :data="users.data" :class="{ loading: filter.loading }">
+        <template #headers>
+            <td class="name">Пользователь</td>
+            <td class="center">Email</td>
+            <td class="center">Имя</td>
+            <td class="center">Регистрация</td>
+            <td class="right"></td>
+        </template>
+        <template #row="{ row }">
+            <td>
                 <Link :href="`/users/${row.username}/`">{{ row.username }}</Link>
                 <div class="g-status red" v-if="row.is_blocked" style="margin-left: 1rem">Заблокирован</div>
-            </template>
-        </el-table-column>
-        <el-table-column label="Email" prop="email" />
-        <el-table-column label="Имя" prop="first_name" />
-        <el-table-column label="Регистрация" align="center">
-            <template #default="{ row }">
-                {{ $filters.toLocalTime(row.created_at).split(' ')[0] }}
-            </template>
-        </el-table-column>
-        <el-table-column align="right">
-            <template #default="{ row }">
+            </td>
+            <td class="center">{{ row.email }}</td>
+            <td class="center">{{ row.first_name }}</td>
+            <td class="center">{{ $filters.toLocalTime(row.created_at).split(' ')[0] }}</td>
+            <td class="right">
                 <a @click="deleteUser(row.username)" title="Удалить" class="g-actionicon" v-if="row.role !== 'admin'">
-                    <font-awesome-icon icon="trash" />
+                    <FontAwesomeIcon icon="trash" />
                 </a>
                 <Link :href="`/users/${row.username}/edit/`" class="g-actionicon">
-                    <font-awesome-icon icon="pen-to-square" />
+                    <FontAwesomeIcon icon="pen-to-square" />
                 </Link>
-            </template>
-        </el-table-column>
-    </el-table>
+            </td>
+        </template>
+    </STable>
 
-    <b-pagination :links="users.links" :total="users.total" />
+    <SPagination :links="users.links" :total="users.total" />
 </template>
 
 <script setup>
 import { inject, reactive } from 'vue';
 import { router } from '@inertiajs/vue3';
-import BFilter from "../../blocks/BFilter.vue";
-import BPagination from "../../blocks/BPagination.vue";
-import { ElMessageBox, ElTable, ElTableColumn } from "element-plus";
+import { STable, SInput, SPagination, SFilterGroup, SFilter, SRadioGroup, SConfirm } from "startup-ui";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const props = defineProps({
     users: Object,
@@ -78,17 +69,12 @@ const filter = reactive({
 });
 
 function deleteUser(username) {
-    ElMessageBox.confirm(
-        `Вы действительно хотите удалить пользователя «${username}»?`,
-        'Подтверждение удаления', {
-            confirmButtonText: 'Да',
-            cancelButtonText: 'Нет',
-            confirmButtonClass: 'g-button',
-            cancelButtonClass: 'g-button outlined'
+    SConfirm.open(
+        `Вы действительно хотите удалить пользователя «${username}»?`, {
+            title: 'Подтверждение удаления',
+            onAccept: () => router.delete(`/users/${username}`)
         }
-    ).then(() => {
-        router.delete(`/users/${username}`);
-    });
+    )
 }
 </script>
 

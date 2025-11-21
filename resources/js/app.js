@@ -2,6 +2,7 @@ import { createApp, h } from 'vue';
 import { createInertiaApp, Link, Head } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import * as filters from './filters.js';
+import 'startup-ui/dist/index.css';
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import './font-awesome.js';

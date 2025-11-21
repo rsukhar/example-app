@@ -1,26 +1,25 @@
 <template>
-    <div class="b-login">
-        <form class="b-form label_top" :class="{ loading: form.processing }" @submit.prevent="submit">
-            <b-formrow title="Логин" :error="errors.username">
-                <el-input type="username" v-model="form.username" />
-            </b-formrow>
-            <b-formrow title="Пароль" :error="errors.password">
-                <el-input type="password" v-model="form.password" />
-            </b-formrow>
-            <b-formrow>
-                <el-switch v-model="form.remember" active-text="Запомнить меня" />
-            </b-formrow>
-            <b-formrow>
-                <button class="g-button">Войти</button>
-            </b-formrow>
-        </form>
+    <div class="s-login">
+        <SForm v-model="form" action="/login">
+            <SFormRow title="Логин" name="username">
+                <SInput />
+            </SFormRow>
+            <SFormRow title="Пароль" name="password">
+                <SInput type="password" />
+            </SFormRow>
+            <SFormRow name="remember">
+                <SSwitch>Запомнить меня</SSwitch>
+            </SFormRow>
+            <SFormRow>
+                <SButton>Войти</SButton>
+            </SFormRow>
+        </SForm>
     </div>
 </template>
 
 <script setup>
 import { useForm } from '@inertiajs/vue3';
-import BFormrow from "../../blocks/BFormrow.vue";
-import { ElInput, ElSwitch } from "element-plus";
+import { SForm, SFormRow, SInput, SSwitch, SButton } from 'startup-ui';
 
 const props = defineProps({
     errors: {
@@ -36,21 +35,15 @@ const form = useForm({
     password: '',
     remember: false,
 });
-
-function submit() {
-    form.post('/login');
-}
 </script>
 
 <style lang="scss" scoped>
-.b-login {
-    display: flex;
-    flex-direction: column;
+.s-login {
     max-width: 400px;
     margin: auto;
 
     & > .b-logo {
-        margin: var(--base-margin) auto;
+        margin: var(--s-base-margin) auto;
     }
 }
 </style>
