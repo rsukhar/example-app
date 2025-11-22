@@ -39,7 +39,8 @@ import { SDashboard, SDashboardItem, SStat } from "startup-ui";
 
 const props = defineProps({
     user: Object,
-    userRoles: Object
+    userRoles: Object,
+    canViewAll: Boolean
 });
 
 const $filters = inject('$filters');

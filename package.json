@@ -22,7 +22,7 @@
         "@vueuse/core": "^11.3.0",
         "@vueuse/integrations": "^10.11.0",
         "dayjs": "^1.11.12",
-        "startup-ui": "^0.5.2",
+        "startup-ui": "^0.5.3",
         "tinymce": "^6.8.6",
         "vue": "^3.4.36"
     }

@@ -109,6 +109,7 @@ class UserController extends Controller
             'userRoles' => config('models.users.roles'),
             'subheaderTitle' => '@' . $user->username,
             'menuLinks' => Navigation::getLinks('user'),
+            'canViewAll' => request()->user()->can('updateAll', $user),
         ]);
     }
 

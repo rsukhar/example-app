@@ -15,7 +15,7 @@
         </Link>
     </div>
 
-    <SForm v-form="form" :action="`/users/${props.values.username}`" titles-at-left>
+    <SForm v-model="form" method="put" :action="`/users/${props.values.username}`" titles-at-left>
         <SFormRow title="Логин *" name="username">
             <SInput />
         </SFormRow>
@@ -57,6 +57,7 @@ const props = defineProps({
 const form = useForm({
     ...props.values,
     // Пустое значение пароля
+    id: props.id,
     password: ''
 });
 </script>

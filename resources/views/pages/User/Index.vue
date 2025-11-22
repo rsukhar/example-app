@@ -6,7 +6,7 @@
         <Link href="/users/create/" class="g-button outlined">Создать пользователя</Link>
     </div>
 
-    <SFilterGroup>
+    <SFilterGroup bind-to-get>
         <SFilter name="role">
             <SRadioGroup :options="userRoles" placeholder="Все" buttons/>
         </SFilter>
@@ -15,7 +15,7 @@
         </SFilter>
     </SFilterGroup>
 
-    <STable :data="users.data" :class="{ loading: filter.loading }">
+    <STable :data="users.data">
         <template #headers>
             <td class="name">Пользователь</td>
             <td class="center">Email</td>
@@ -46,9 +46,9 @@
 </template>
 
 <script setup>
-import { inject, reactive } from 'vue';
+import { inject } from 'vue';
 import { router } from '@inertiajs/vue3';
-import { STable, SInput, SPagination, SFilterGroup, SFilter, SRadioGroup, SConfirm } from "startup-ui";
+import { STable, SInput, SPagination, SFilterGroup, SRadioGroup, SFilter, SConfirm } from "startup-ui";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const props = defineProps({
@@ -63,10 +63,6 @@ const props = defineProps({
 });
 
 const $filters = inject('$filters');
-
-const filter = reactive({
-    ...props.initialFilter
-});
 
 function deleteUser(username) {
     SConfirm.open(

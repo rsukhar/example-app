@@ -59,8 +59,14 @@ function logout() {
 </script>
 
 <style lang="scss">
-.s-canvas-header {
-    color: var(--s-white) !important;
+.s-canvas {
+    &-header {
+        color: var(--s-white) !important;
+    }
+
+    &-subheader {
+        background-color: var(--s-primary-darkest);
+    }
 }
 
 .s-headerlink {
@@ -75,5 +81,10 @@ function logout() {
     a:hover {
         color: var(--s-white);
     }
+}
+
+.s-subheader-title {
+    margin: 2rem 0 1rem;
+    font-size: var(--s-h2-font-size);
 }
 </style>
