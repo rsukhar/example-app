@@ -1,56 +1,46 @@
 <template>
     <Head :title="user.username" />
 
-    <div class="b-dashboard">
-
-        <div class="b-dashboard-item">
-            <div class="b-dashboard-item-title">
-                <div>Личные данные</div>
+    <SDashboard>
+        <SDashboardItem title="Личные данные">
+            <template #extra>
                 <Link :href="`/users/${user.username}/edit/`">Редактировать</Link>
-            </div>
-
-            <div class="g-stat">
-                <div>Логин</div>
+            </template>
+            <SStat title="Логин">
                 <div>{{ user.username }}</div>
-            </div>
+            </SStat>
 
-            <div class="g-stat" v-if="user.first_name">
-                <div>Имя</div>
+            <SStat title="Имя" v-if="user.first_name">
                 <div>{{ user.first_name }}</div>
-            </div>
+            </SStat>
 
-            <div class="g-stat" v-if="user.email">
-                <div>Email</div>
+            <SStat title="Email" v-if="user.email">
                 <div>{{ user.email }}</div>
-            </div>
+            </SStat>
 
-            <div class="g-stat" v-if="canViewAll">
-                <div>Роль</div>
+            <SStat title="Роль" v-if="canViewAll">
                 <div>{{ userRoles[user.role] ?? user.role }}</div>
-            </div>
+            </SStat>
 
-            <div class="g-stat" v-if="user.is_blocked">
-                <div>Статус</div>
-                <div>
-                    <div class="g-status red">Заблокирован</div>
-                </div>
-            </div>
+            <SStat title="Статус" v-if="user.is_blocked">
+                <div class="g-status red">Заблокирован</div>
+            </SStat>
 
-            <div class="g-stat">
-                <div>Дата регистрации</div>
+            <SStat title="Дата регистрации">
                 <div>{{ $filters.toLocalTime(user.created_at).split(' ')[0] }}</div>
-            </div>
-        </div>
-
-    </div>
+            </SStat>
+        </SDashboardItem>
+    </SDashboard>
 </template>
 
 <script setup>
 import { inject } from 'vue';
+import { SDashboard, SDashboardItem, SStat } from "startup-ui";
 
 const props = defineProps({
     user: Object,
-    userRoles: Object
+    userRoles: Object,
+    canViewAll: Boolean
 });
 
 const $filters = inject('$filters');

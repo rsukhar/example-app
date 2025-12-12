@@ -1,6 +1,5 @@
 @import "normalize.css";
 @import "variables";
-@import "element-plus-styling";
 @import "helpers";
 
 html {
@@ -11,44 +10,44 @@ html {
 }
 
 a {
-    color: var(--primary);
+    color: var(--s-primary);
     text-decoration: none;
     & > svg:first-child {
         display: inline-block;
         margin-right: 8px;
     }
     &:hover {
-        color: var(--primary-dark);
+        color: var(--s-primary-dark);
     }
 }
 
 // Основная типографика
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, p, ol, ul {
-    margin: 0 0 var(--base-margin);
+    margin: 0 0 var(--s-base-margin);
     font-weight: normal;
 }
 h1, .h1 {
-    font-size: var(--h1-font-size);
+    font-size: var(--s-h1-font-size);
     font-weight: bold;
     @include mobile(){
         font-size: 22px;
     }
 }
 h2, .h2 {
-    font-size: var(--h2-font-size);
+    font-size: var(--s-h2-font-size);
     font-weight: normal;
     @include mobile(){
         font-size: 20px;
     }
 }
 h3, .h3 {
-    font-size: var(--h3-font-size);
+    font-size: var(--s-h3-font-size);
     @include mobile(){
         font-size: 16px;
     }
 }
 h4, .h4 {
-    font-size: var(--h4-font-size);
+    font-size: var(--s-h4-font-size);
     @include mobile(){
         font-size: 14px;
         font-weight: bold;
@@ -56,7 +55,7 @@ h4, .h4 {
 }
 ul > li,
 ol > li {
-    margin-bottom: calc(var(--base-margin) / 2);
+    margin-bottom: calc(var(--s-base-margin) / 2);
 }
 img {
     max-width: 100%;
@@ -81,7 +80,7 @@ img {
             position: relative;
             pointer-events: none;
             opacity: 0.5;
-            color: var(--white);
+            color: var(--s-white);
             &::after {
                 content: "";
                 position: absolute;
@@ -103,12 +102,16 @@ img {
 
 // Body
 body {
+    display: flex;
     min-height: 100%;
+    flex-direction: column;
+    margin-bottom: 0 !important;
     #app {
         display: flex;
         flex-direction: column;
         min-height: 100%;
-        background: var(--white);
+        background: var(--s-white);
+        flex-grow: 1;
     }
     .b-logo {
         display: flex;
@@ -137,10 +140,10 @@ body {
 .g-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: var(--base-margin);
+    margin-bottom: var(--s-base-margin);
     td {
         padding: 0.8rem;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--s-border);
         a {
             vertical-align: middle;
         }
@@ -170,11 +173,11 @@ body {
                 color: inherit;
             }
             & a:hover {
-                color: var(--primary);
+                color: var(--s-primary);
             }
             &.asc a,
             &.desc a {
-                color: var(--primary);
+                color: var(--s-primary);
                 &:after {
                     display: inline-block;
                     vertical-align: top;
@@ -190,24 +193,24 @@ body {
     }
     tfoot {
         td {
-            background-color: var(--white);
+            background-color: var(--s-white);
             font-weight: bold;
         }
     }
     &.bordered {
         th, td {
-            border: 1px solid var(--border);
+            border: 1px solid var(--s-border);
         }
     }
     &.striped {
         tbody tr:nth-of-type(odd) {
-            background-color: var(--primary-lightest);
+            background-color: var(--s-primary-lightest);
         }
     }
     &.hoverable {
         tbody tr:hover,
         tbody tr.hover {
-            background-color: var(--primary-lightest);
+            background-color: var(--s-primary-lightest);
         }
     }
 }
@@ -224,24 +227,24 @@ body {
     cursor: pointer;
     font-size: 1rem;
     font-weight: normal;
-    line-height: var(--field-height);
+    line-height: var(--s-field-height);
     padding: 0 1.5em;
-    border-radius: var(--border-radius);
-    background-color: var(--primary);
-    color: var(--white);
-    border: 1px var(--primary) solid;
+    border-radius: var(--s-border-radius);
+    background-color: var(--s-primary);
+    color: var(--s-white);
+    border: 1px var(--s-primary) solid;
     &:hover {
-        background-color: var(--primary-dark);
-        border-color: var(--primary-dark);
-        color: var(--white);
+        background-color: var(--s-primary-dark);
+        border-color: var(--s-primary-dark);
+        color: var(--s-white);
     }
     &.outlined {
         background-color: transparent;
-        color: var(--primary);
+        color: var(--s-primary);
         &:hover {
-            background-color: var(--primary);
-            border-color: var(--primary);
-            color: var(--white);
+            background-color: var(--s-primary);
+            border-color: var(--s-primary);
+            color: var(--s-white);
         }
     }
     &.disabled {
@@ -274,21 +277,21 @@ body {
     cursor: pointer;
     width: 30px;
     text-align: center;
-    color: var(--primary);
+    color: var(--s-primary);
     svg {
         margin-left: 0;
         margin-right: 0 !important;
     }
     & + & {
-        margin-left: calc(var(--base-margin) / 3);
+        margin-left: calc(var(--s-base-margin) / 3);
     }
     &:hover {
-        color: var(--primary-dark);
+        color: var(--s-primary-dark);
     }
     &.danger {
-        color: var(--red);
+        color: var(--s-red);
         &:hover {
-            color: var(--red-dark);
+            color: var(--s-red-dark);
         }
     }
 }
@@ -296,7 +299,7 @@ body {
 // Заглавие страницы
 .g-titlebar {
     display: flex;
-    margin-bottom: var(--base-margin);
+    margin-bottom: var(--s-base-margin);
     & > h1,
     & > h2,
     & > h3,
@@ -305,7 +308,7 @@ body {
     & > div {
         margin: auto 0;
         &:not(:first-child) {
-            margin-left: var(--base-margin);
+            margin-left: var(--s-base-margin);
         }
         &.right {
             margin-left: auto;
@@ -326,7 +329,7 @@ $iconWidth: 18px;
     margin-bottom: 2rem;
     &-header {
         font-weight: bold;
-        border-bottom: 1px var(--border) solid;
+        border-bottom: 1px var(--s-border) solid;
         .for_title {
             padding-left: $iconWidth + 6px;
             width: $titleWidth;
@@ -341,7 +344,7 @@ $iconWidth: 18px;
     }
     &-cell {
         font-size: 1rem;
-        color: var(--black);
+        color: var(--s-black);
         padding: 10px 0;
         width: 120px;
         &.for_title {
@@ -373,7 +376,7 @@ $iconWidth: 18px;
     }
     .el-tree-node__content {
         height: auto;
-        border-bottom: 1px var(--border) solid;
+        border-bottom: 1px var(--s-border) solid;
     }
     .el-tree__drop-indicator {
         height: 3px !important;
@@ -385,11 +388,11 @@ $iconWidth: 18px;
 
 // Информационная ссылка
 .g-infolink {
-    color: var(--primary);
-    border-bottom: 1px var(--primary) dashed;
+    color: var(--s-primary);
+    border-bottom: 1px var(--s-primary) dashed;
     cursor: help;
     &:hover {
-        color: var(--primary-dark);
+        color: var(--s-primary-dark);
     }
 }
 
@@ -397,28 +400,28 @@ $iconWidth: 18px;
 .g-alert {
     display: flex;
     align-items: center;
-    background-color: var(--bg);
-    color: var(--border-light);
-    border-radius: var(--border-radius);
+    background-color: var(--s-bg);
+    color: var(--s-border-light);
+    border-radius: var(--s-border-radius);
     margin-bottom: 2rem;
     padding: 1rem 1.5rem;
     & > p {
         margin-bottom: 0;
     }
     &.note {
-        background-color: var(--primary-lightest);
+        background-color: var(--s-primary-lightest);
     }
     &.attention {
-        background-color: var(--yellow-light);
+        background-color: var(--s-yellow-light);
     }
     &.success {
-        background-color: var(--green-lightest);
-        color: var(--green-dark);
+        background-color: var(--s-green-lightest);
+        color: var(--s-green-dark);
     }
     &.error {
-        background-color: var(--red-lightest);
-        border-color: var(--red);
-        color: var(--red);
+        background-color: var(--s-red-lightest);
+        border-color: var(--s-red);
+        color: var(--s-red);
     }
 }
 
@@ -429,24 +432,19 @@ $iconWidth: 18px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     font-weight: bold;
-    background-color: var(--bg);
+    background-color: var(--s-bg);
     border-radius: 6px;
     line-height: 20px;
     padding: 0 10px;
     vertical-align: middle;
     text-align: center;
     &.green {
-        background-color: var(--green-lightest);
+        background-color: var(--s-green-lightest);
     }
     &.red {
-        background-color: var(--red);
-        color: var(--white);
+        background-color: var(--s-red);
+        color: var(--s-white);
     }
-}
-
-// Присвоение цвета
-.color_red {
-    color: var(--red-dark);
 }
 
 // Форматированная статистика
@@ -468,7 +466,7 @@ $iconWidth: 18px;
             flex-grow: 1;
         }
         .large {
-            font-size: var(--h2-font-size);
+            font-size: var(--s-h2-font-size);
             font-weight: bold;
             line-height: 32px;
 
@@ -503,8 +501,8 @@ $iconWidth: 18px;
         display: inline-block;
         width: 100%;
         margin-bottom: 30px;
-        background-color: var(--primary-lightest);
-        border-radius: var(--border-radius);
+        background-color: var(--s-primary-lightest);
+        border-radius: var(--s-border-radius);
         padding: 1.5rem;
         box-sizing: border-box;
         break-inside: avoid;
@@ -545,7 +543,7 @@ $iconWidth: 18px;
         }
 
         &.style_red {
-            background-color: var(--red-light);
+            background-color: var(--s-red-light);
         }
     }
 }

@@ -1,7 +1,6 @@
 import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue'
-import ElementPlus from 'unplugin-element-plus/vite'
 
 export default defineConfig({
     css: {
@@ -20,9 +19,6 @@ export default defineConfig({
                     includeAbsolute: false,
                 },
             },
-        }),
-        ElementPlus({
-            // options
         }),
         laravel({
             input: ['resources/js/app.js'],

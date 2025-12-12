@@ -14,7 +14,6 @@ class UserUpdateRequest extends FormRequest
         $userRoles = array_keys(config('models.users.roles', []));
 
         return [
-
             'name' => 'sometimes|string|nullable|max:255',
             'username' => [
                 'sometimes',

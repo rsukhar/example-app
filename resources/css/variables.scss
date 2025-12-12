@@ -1,62 +1,63 @@
 :root {
     // Черный, белый и серый
-    --white: #fff;
-    --black: #000;
-    --gray: #f2f2f2;
+    --s-white: #fff;
+    --s-black: #000;
+    --s-gray: #f2f2f2;
 
     // Дополнительные цвета фона
-    --bg: #f2f3f4;
+    --s-bg: #f2f3f4;
+    --s-bg-header: #3755fa;
 
     // Цвета бордюров
-    --border: #d1d1d1;
-    --border-light: #666;
+    --s-border: #d1d1d1;
+    --s-border-light: #666;
 
     // Цвета текста
-    --text: #000;
-    --text-light: #999;
+    --s-text: #000;
+    --s-text-light: #999;
 
     // Главный акцент
-    --primary: #3755fa;
-    --primary-dark: #2842d3;
-    --primary-darkest: #1c31a4;
-    --primary-light: #8e9cff;
-    --primary-lightest: #eceeff;
+    --s-primary: #3755fa;
+    --s-primary-dark: #2842d3;
+    --s-primary-darkest: #1c31a4;
+    --s-primary-light: #8e9cff;
+    --s-primary-lightest: #eceeff;
 
     // Red color for error messages, alerts, danger actions
-    --red: #ea524a;
-    --red-dark: #d33229;
-    --red-light: #ffbfbf;
-    --red-lightest: #ffece8;
+    --s-red: #ea524a;
+    --s-red-dark: #d33229;
+    --s-red-light: #ffbfbf;
+    --s-red-lightest: #ffece8;
 
     // Yellow color for error messages, alerts, danger actions
-    --yellow: #e6a23c;
-    --yellow-dark: #b88230;
-    --yellow-light: #eebe77;
-    --yellow-lightest: #faecd8;
+    --s-yellow: #e6a23c;
+    --s-yellow-dark: #b88230;
+    --s-yellow-light: #eebe77;
+    --s-yellow-lightest: #faecd8;
 
     // Green color for complete messages, prefer actions
-    --green: #53b753;
-    --green-dark: #3f983f;
-    --green-light: #65bf65;
-    --green-lightest: #b8e5b8;
+    --s-green: #53b753;
+    --s-green-dark: #3f983f;
+    --s-green-light: #65bf65;
+    --s-green-lightest: #b8e5b8;
 
     // Shadows
-    --shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+    --s-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 
     // UI sizes
-    --field-height: 32px;
+    --s-field-height: 32px;
 
     // Типографика
-    --h1-font-size: 2.2rem;
-    --h2-font-size: 1.7rem;
-    --h3-font-size: 1.4rem;
-    --h4-font-size: 1.2rem;
+    --s-h1-font-size: 2.2rem;
+    --s-h2-font-size: 1.7rem;
+    --s-h3-font-size: 1.4rem;
+    --s-h4-font-size: 1.2rem;
 
     // Разметка
-    --base-width: 1200px;
-    --base-margin: 20px;
-    --base-padding: 20px;
+    --s-base-width: 1200px;
+    --s-base-margin: 20px;
+    --s-base-padding: 20px;
 
     // Основной стиль скруглений
-    --border-radius: 6px;
+    --s-border-radius: 6px;
 }
