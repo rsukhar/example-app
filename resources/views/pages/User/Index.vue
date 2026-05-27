@@ -6,7 +6,7 @@
         <Link href="/users/create/" class="g-button outlined">Создать пользователя</Link>
     </div>
 
-    <SFilterGroup bind-to-get>
+    <SFilterGroup bind-to-query>
         <SFilter name="role">
             <SRadioGroup :options="userRoles" placeholder="Все" buttons/>
         </SFilter>

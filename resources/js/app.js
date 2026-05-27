@@ -36,3 +36,26 @@ createInertiaApp({
         color: appProgressBarColor
     }
 });
+
+/**
+ * Обходной фикс бага startup-ui 0.12: скрытые <input type="radio"> внутри SRadioGroup
+ * не имеют общего name, и при выборе новой опции у соседних радиокнопок не снимается
+ * нативный checked — визуально «нажатыми» остаются сразу несколько кнопок (значение
+ * модели при этом корректно). Принудительно снимаем отметку с остальных радиокнопок
+ * той же группы. Слушатель на document регистрируется один раз и переживает SPA-переходы.
+ */
+document.addEventListener('change', (event) => {
+    const radio = event.target;
+
+    if ( ! radio.matches?.('.s-radiogroup-container input[type="radio"]')) {
+        return;
+    }
+
+    radio.closest('.s-radiogroup-container')
+        .querySelectorAll('input[type="radio"]')
+        .forEach((sibling) => {
+            if (sibling !== radio) {
+                sibling.checked = false;
+            }
+        });
+});
